@@ -6,6 +6,7 @@ use warnings;
 
 use Nitesi::Account::Manager;
 use Nitesi::Cart;
+use Nitesi::Class;
 
 use Dancer ':syntax';
 use Dancer::Plugin;
@@ -34,6 +35,15 @@ our $VERSION = '0.0001';
     account->acl(check => 'view_prices');
     account->logout();
 
+=head1 CARTS
+
+The cart keyword returns a L<Nitesi::Cart> object with the corresponding methods. 
+
+You can use multiple carts like that:
+
+    cart('wishlist')->add({sku => 'ABC', name => 'Foobar', quantity => 1, price => 42});
+    cart('wishlist')->total;
+
 =head1 CONFIGURATION
 
 The default configuration is as follows:
@@ -61,51 +71,17 @@ before sub {
     my ($backend, $backend_class, $backend_obj);
 
     _load_settings() unless $settings;
-
-    if (exists $settings->{Cart}->{Backend}) {
-	$backend = $settings->{Cart}->{Backend};
-    }
-    else {
-	$backend = 'Session';
-    }
-
-    # load backend class
-    if ($backend =~ /::/) {
-	$backend_class = $backend;
-    }
-    else {
-	$backend_class = __PACKAGE__ . "::Cart::$backend";
-    }
-
-    eval "require $backend_class";
-
-    if ($@) {
-	die "Failed to load $backend_class: $@\n";
-    }
-
-    # instantiate backend object
-    eval {
-	$backend_obj = $backend_class->new(name => '',
-					   run_hooks => sub {Dancer::Factory::Hook->instance->execute_hooks(@_)});
-    };
-
-    if ($@) {
-	die "Failed to instantiate $backend_class: $@\n";
-    }
-
-    $backend_obj->load();
-
-    var nitesi_cart_backend => $backend_obj;
 };
 
 after sub {
-    my $backend_obj;
+    my $carts;
 
-    $backend_obj = vars->{'nitesi_cart_backend'};
+    # save all carts
+    $carts = vars->{'nitesi_carts'} || {};
 
-    $backend_obj->save();
-
-    var nitesi_cart_backend => undef;
+    for (keys %$carts) {
+	$carts->{$_}->save();
+    }
 };
 
 register account => sub {
@@ -124,7 +100,21 @@ register account => sub {
 };
 
 register cart => sub {
-    return vars->{'nitesi_cart_backend'};
+    my $name;
+
+    if (@_) {
+	$name = shift;
+    }
+    else {
+	$name = 'main';
+    }
+
+    unless (exists vars->{nitesi_carts}->{$name}) {
+	# instantiate cart
+	vars->{nitesi_carts}->{$name} = _create_cart($name);
+    }
+
+    return vars->{'nitesi_carts'}->{$name};
 };
 
 register_plugin;
@@ -142,6 +132,34 @@ sub _load_account_providers {
 		     dbh => database()]];
 	}
     }
+}
+
+sub _create_cart {
+    my $name = shift;
+    my ($backend, $backend_class, $cart);
+
+    if (exists $settings->{Cart}->{Backend}) {
+	$backend = $settings->{Cart}->{Backend};
+    }
+    else {
+	$backend = 'Session';
+    }
+
+    # determine backend class name
+    if ($backend =~ /::/) {
+	$backend_class = $backend;
+    }
+    else {
+	$backend_class = __PACKAGE__ . "::Cart::$backend";
+    }
+
+    $cart = Nitesi::Class->instantiate($backend_class,
+				       name => $name,
+				       run_hooks => sub {Dancer::Factory::Hook->instance->execute_hooks(@_)});
+
+    $cart->load();
+
+    return $cart;
 }
 
 sub _update_session {

@@ -17,27 +17,35 @@ use base 'Nitesi::Cart';
 
 =head2 load
 
-Loads current cart from Dancer's session.
+Loads cart from Dancer's session.
 
 =cut
 
 sub load {
     my $self = shift;
+    my $carts;
 
-    # load cart(s) from session
-    $self->seed(session('cart'));
+    $carts = session('cart');
+
+    if ($carts) {
+	# load cart from session
+	$self->seed(session('cart')->{$self->name});
+    }
 }
 
 =head2 save
 
-Saves current cart to Dancer's session.
+Saves cart to Dancer's session.
 
 =cut
 
 sub save {
     my $self = shift;
+    my $carts;
 
-    session cart => $self->items();
+    $carts = session('cart');
+    $carts->{$self->name} = $self->items();
+    session cart => $carts;
 }
 
 =head1 AUTHOR
