@@ -207,14 +207,14 @@ Stefan Hornburg (Racke), C<racke@linuxia.de>
 =head1 BUGS
 
 Please report any bugs or feature requests to C<bug-nitesi at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Nitesi>.  I will be notified, and then you'll
+the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Dancer-Plugin-Nitesi>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
 =head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc Nitesi
+    perldoc Dancer-Plugin-Nitesi
 
 You can also look for information at:
 
@@ -222,19 +222,19 @@ You can also look for information at:
 
 =item * RT: CPAN's request tracker (report bugs here)
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Nitesi>
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Dancer-Plugin-Nitesi>
 
 =item * AnnoCPAN: Annotated CPAN documentation
 
-L<http://annocpan.org/dist/Nitesi>
+L<http://annocpan.org/dist/Dancer-Plugin-Nitesi>
 
 =item * CPAN Ratings
 
-L<http://cpanratings.perl.org/d/Nitesi>
+L<http://cpanratings.perl.org/d/Dancer-Plugin-Nitesi>
 
 =item * Search CPAN
 
-L<http://search.cpan.org/dist/Nitesi/>
+L<http://search.cpan.org/dist/Dancer-Plugin-Nitesi/>
 
 =back
 
