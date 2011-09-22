@@ -2,7 +2,7 @@ NAME
     Dancer::Plugin::Nitesi - Nitesi Shop Machine plugin for Dancer
 
 VERSION
-    Version 0.0001
+    Version 0.0002
 
 SYNOPSIS
         use Dancer::Plugin::Nitesi;
@@ -13,6 +13,15 @@ SYNOPSIS
         account->login(username => 'frank@nitesi.com', password => 'nevairbe');
         account->acl(check => 'view_prices');
         account->logout();
+
+CARTS
+    The cart keyword returns a Nitesi::Cart object with the corresponding
+    methods.
+
+    You can use multiple carts like that:
+
+        cart('wishlist')->add({sku => 'ABC', name => 'Foobar', quantity => 1, price => 42});
+        cart('wishlist')->total;
 
 CONFIGURATION
     The default configuration is as follows:
@@ -35,28 +44,28 @@ AUTHOR
 BUGS
     Please report any bugs or feature requests to `bug-nitesi at
     rt.cpan.org', or through the web interface at
-    http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Nitesi. I will be
-    notified, and then you'll automatically be notified of progress on your
-    bug as I make changes.
+    http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Dancer-Plugin-Nitesi. I
+    will be notified, and then you'll automatically be notified of progress
+    on your bug as I make changes.
 
 SUPPORT
     You can find documentation for this module with the perldoc command.
 
-        perldoc Nitesi
+        perldoc Dancer-Plugin-Nitesi
 
     You can also look for information at:
 
     * RT: CPAN's request tracker (report bugs here)
-        http://rt.cpan.org/NoAuth/Bugs.html?Dist=Nitesi
+        http://rt.cpan.org/NoAuth/Bugs.html?Dist=Dancer-Plugin-Nitesi
 
     * AnnoCPAN: Annotated CPAN documentation
-        http://annocpan.org/dist/Nitesi
+        http://annocpan.org/dist/Dancer-Plugin-Nitesi
 
     * CPAN Ratings
-        http://cpanratings.perl.org/d/Nitesi
+        http://cpanratings.perl.org/d/Dancer-Plugin-Nitesi
 
     * Search CPAN
-        http://search.cpan.org/dist/Nitesi/
+        http://search.cpan.org/dist/Dancer-Plugin-Nitesi/
 
 ACKNOWLEDGEMENTS
     The Dancer developers and community for their great application
@@ -70,4 +79,7 @@ LICENSE AND COPYRIGHT
     by the Free Software Foundation; or the Artistic License.
 
     See http://dev.perl.org/licenses/ for more information.
+
+SEE ALSO
+    Nitesi
 

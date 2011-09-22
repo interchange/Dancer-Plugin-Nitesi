@@ -1,5 +1,15 @@
 Revision history for Dancer::Plugin::Nitesi
 
+0.0002 Thu Sep 22 11:22:46 2011 CEST
+
+    [ENHANCEMENTS]
+
+    * Add support for multiple carts.
+
+    [DOCUMENTATION]
+
+    * Fix references to this package in the "BUGS" and "SUPPORT" POD sections.
+
 0.0001 Wed Sep 21 09:39:37 2011 CEST
  
     * Initial release
