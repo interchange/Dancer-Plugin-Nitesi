@@ -140,13 +140,18 @@ sub _load_account_providers {
 
 sub _create_cart {
     my $name = shift;
-    my ($backend, $backend_class, $cart);
+    my ($backend, $backend_class, $cart, $cart_settings);
 
     if (exists $settings->{Cart}->{Backend}) {
 	$backend = $settings->{Cart}->{Backend};
     }
     else {
 	$backend = 'Session';
+    }
+
+    # check for specific settings for this cart name
+    if (exists $settings->{Cart}->{Carts}->{$name}) {
+	$cart_settings = $settings->{Cart}->{Carts}->{$name};
     }
 
     # determine backend class name
