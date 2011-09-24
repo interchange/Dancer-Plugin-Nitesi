@@ -2,7 +2,7 @@ NAME
     Dancer::Plugin::Nitesi - Nitesi Shop Machine plugin for Dancer
 
 VERSION
-    Version 0.0002
+    Version 0.0003
 
 SYNOPSIS
         use Dancer::Plugin::Nitesi;
@@ -22,6 +22,23 @@ CARTS
 
         cart('wishlist')->add({sku => 'ABC', name => 'Foobar', quantity => 1, price => 42});
         cart('wishlist')->total;
+
+HOOKS
+    This plugin installs the following hooks:
+
+    before_cart_add
+        Triggered before item is added to the cart.
+
+    after_cart_add
+        Triggered after item is added to the cart. Used by DBI backend to
+        save item to the database.
+
+    before_cart_remove
+        Triggered before item is removed from the cart.
+
+    after_cart_remove
+        Triggered after item is removed from the cart. Used by DBI backend
+        to delete item from the database.
 
 CONFIGURATION
     The default configuration is as follows:

@@ -1,5 +1,16 @@
 Revision history for Dancer::Plugin::Nitesi
 
+0.0003 Sat Sep 24 19:53:59 2011 CEST
+
+    [ENHANCEMENTS]
+
+    * Add DBI cart backend.
+    * Pass specific cart settings by cart name to backends.
+
+    [DOCUMENTATION]
+
+    * Add documentation about hooks installed by Dancer::Plugin::Nitesi.
+
 0.0002 Thu Sep 22 11:22:46 2011 CEST
 
     [ENHANCEMENTS]
