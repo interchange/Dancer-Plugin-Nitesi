@@ -44,6 +44,32 @@ You can use multiple carts like that:
     cart('wishlist')->add({sku => 'ABC', name => 'Foobar', quantity => 1, price => 42});
     cart('wishlist')->total;
 
+=head1 HOOKS
+
+This plugin installs the following hooks:
+
+=over 4
+
+=item before_cart_add
+
+Triggered before item is added to the cart.
+
+=item after_cart_add
+
+Triggered after item is added to the cart.
+Used by DBI backend to save item to the database.
+
+=item before_cart_remove
+
+Triggered before item is removed from the cart.
+
+=item after_cart_remove
+
+Triggered after item is removed from the cart.
+Used by DBI backend to delete item from the database.
+
+=back
+
 =head1 CONFIGURATION
 
 The default configuration is as follows:
