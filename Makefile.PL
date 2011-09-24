@@ -15,6 +15,7 @@ WriteMakefile(
         'Test::More' => 0,
         'YAML'       => 0,
 	'Nitesi'     => 0.0001,
+	'Nitesi::DBI' => 0,
         'Dancer'     => 1.3071,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },

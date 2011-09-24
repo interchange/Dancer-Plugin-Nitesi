@@ -59,7 +59,9 @@ The default configuration is as follows:
 
 =cut
 
-Dancer::Factory::Hook->instance->install_hooks(qw/before_cart_add after_cart_add/);
+Dancer::Factory::Hook->instance->install_hooks(qw/before_cart_add after_cart_add
+	before_cart_remove after_cart_remove
+/);
 
 my $settings = undef;
 
@@ -84,7 +86,9 @@ after sub {
     }
 };
 
-register account => sub {
+register account => \&_account;
+
+sub _account {
     my $acct;
 
     unless (vars->{'nitesi_account'}) {
@@ -155,9 +159,10 @@ sub _create_cart {
 
     $cart = Nitesi::Class->instantiate($backend_class,
 				       name => $name,
+                                       settings => $cart_settings,
 				       run_hooks => sub {Dancer::Factory::Hook->instance->execute_hooks(@_)});
 
-    $cart->load();
+    $cart->load(uid => _account()->uid);
 
     return $cart;
 }
