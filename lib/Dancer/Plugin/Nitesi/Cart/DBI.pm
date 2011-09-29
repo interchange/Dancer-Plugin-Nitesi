@@ -56,7 +56,7 @@ sub load {
     unless ($code) {
 	return;
     }
-    $self->{code} = $code;
+    $self->{id} = $code;
 
     # build query for item retrieval
     %specs = (fields => $self->{settings}->{fields} || 
