@@ -7,6 +7,7 @@ use warnings;
 use Nitesi::Account::Manager;
 use Nitesi::Cart;
 use Nitesi::Class;
+use Nitesi::Query::DBI;
 
 use Dancer ':syntax';
 use Dancer::Plugin;
@@ -145,6 +146,25 @@ register cart => sub {
     }
 
     return vars->{'nitesi_carts'}->{$name};
+};
+
+register query => sub {
+    my ($name, $q);
+
+    if (@_) {
+	$name = shift;
+    }
+    else {
+	$name = '';
+    }
+
+    unless (exists vars->{'nitesi_query'}->{$name}) {
+	# not yet used in this request
+	$q = Nitesi::Query::DBI->new(dbh => database());
+	vars->{'nitesi_query'}->{$name} = $q;
+    }
+
+    return vars->{nitesi_query}->{$name};
 };
 
 register_plugin;
