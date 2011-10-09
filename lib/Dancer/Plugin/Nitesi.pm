@@ -225,6 +225,8 @@ sub _update_session {
     # determine session key
     $key = $settings->{Account}->{Session}->{Key} || 'user';
 
+    $function ||= '';
+
     if ($function eq 'init') {
 	# initialize user related information
 	session $key => $acct;
