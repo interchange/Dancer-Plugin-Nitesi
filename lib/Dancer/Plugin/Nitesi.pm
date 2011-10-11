@@ -79,10 +79,23 @@ The default configuration is as follows:
       Nitesi:
         Account:
           Session:
-          Key: account
-        Provider: DBI
+            Key: account
+          Provider: DBI
       Cart:
         Backend: Session
+
+=head2 ACCOUNT
+
+=head3 Connection
+
+The connection used by L<Dancer::Plugin::Database> can be set
+as follows:
+
+    plugins:
+      Nitesi:
+        Account:
+          Provider: DBI
+          Connection: shop
 
 =cut
 
@@ -179,7 +192,7 @@ sub _load_account_providers {
 	if ($settings->{Account}->{Provider} eq 'DBI') {
 	    # we need to pass $dbh
 	    return [['Nitesi::Account::Provider::DBI',
-		     dbh => database()]];
+		     dbh => database($settings->{Account}->{Connection})]];
 	}
     }
 }
