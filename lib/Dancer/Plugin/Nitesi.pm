@@ -97,6 +97,17 @@ as follows:
           Provider: DBI
           Connection: shop
 
+=head3 Fields
+
+Extra fields can be retrieved from the account provider and
+put into the session after a successful login:
+
+    plugins:
+      Nitesi:
+        Account:
+          Provider: DBI
+          Fields: first_name,last_name,city
+
 =cut
 
 Dancer::Factory::Hook->instance->install_hooks(qw/before_cart_add after_cart_add
@@ -192,9 +203,23 @@ sub _load_account_providers {
 	if ($settings->{Account}->{Provider} eq 'DBI') {
 	    # we need to pass $dbh
 	    return [['Nitesi::Account::Provider::DBI',
-		     dbh => database($settings->{Account}->{Connection})]];
+		     dbh => database($settings->{Account}->{Connection}),
+		     fields => _config_to_array($settings->{Account}->{Fields}),
+		    ]];
 	}
     }
+}
+
+sub _config_to_array {
+    my $config = shift;
+    my @values;
+
+    if (defined $config) {
+	@values = split(/\s+,\s+/, $config);
+	return \@values;
+    }
+
+    return;
 }
 
 sub _create_cart {
