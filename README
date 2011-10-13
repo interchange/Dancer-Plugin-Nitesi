@@ -2,7 +2,7 @@ NAME
     Dancer::Plugin::Nitesi - Nitesi Shop Machine plugin for Dancer
 
 VERSION
-    Version 0.0003
+    Version 0.0010
 
 SYNOPSIS
         use Dancer::Plugin::Nitesi;
@@ -47,10 +47,30 @@ CONFIGURATION
           Nitesi:
             Account:
               Session:
-              Key: account
-            Provider: DBI
+                Key: account
+              Provider: DBI
           Cart:
             Backend: Session
+
+  ACCOUNT
+    Connection
+    The connection used by Dancer::Plugin::Database can be set as follows:
+
+        plugins:
+          Nitesi:
+            Account:
+              Provider: DBI
+              Connection: shop
+
+    Fields
+    Extra fields can be retrieved from the account provider and put into the
+    session after a successful login:
+
+        plugins:
+          Nitesi:
+            Account:
+              Provider: DBI
+              Fields: first_name,last_name,city
 
 CAVEATS
     Please anticipate API changes in this early state of development.

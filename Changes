@@ -1,5 +1,19 @@
 Revision history for Dancer::Plugin::Nitesi
 
+0.0010 Thu Oct 13 09:25:25 2011 EDT
+
+    [ENHANCEMENTS]
+
+    * Add query keyword to Dancer::Plugin::Nitesi.
+    * Add setting for extra fields to be stored into the session after
+      successful login. 
+    * Use connnection configuration parameter for DBI account
+      provider.
+
+    [BUG FIXES]
+
+    * Fix Perl warning due to undefined $function in _update_session function.
+
 0.0003 Sat Sep 24 19:53:59 2011 CEST
 
     [ENHANCEMENTS]
