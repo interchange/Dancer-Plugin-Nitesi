@@ -219,7 +219,7 @@ sub _config_to_array {
 	return \@values;
     }
 
-    return;
+    return [];
 }
 
 sub _create_cart {
