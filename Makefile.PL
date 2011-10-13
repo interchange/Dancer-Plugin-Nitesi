@@ -14,8 +14,8 @@ WriteMakefile(
     PREREQ_PM => {
         'Test::More' => 0,
         'YAML'       => 0,
-	'Nitesi'     => 0.0001,
-	'Nitesi::DBI' => 0,
+	'Nitesi'     => 0.0010,
+	'Nitesi::DBI' => 0.0010,
         'Dancer'     => 1.3071,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
