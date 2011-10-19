@@ -110,7 +110,9 @@ put into the session after a successful login:
 
 =cut
 
-Dancer::Factory::Hook->instance->install_hooks(qw/before_cart_add after_cart_add
+Dancer::Factory::Hook->instance->install_hooks(qw/before_cart_add_validate
+        before_cart_add after_cart_add
+        before_cart_remove_validate
 	before_cart_remove after_cart_remove
 /);
 
