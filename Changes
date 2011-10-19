@@ -1,5 +1,13 @@
 Revision history for Dancer::Plugin::Nitesi
 
+0.0011 Wed Oct 19 15:34:13 2011 CEST
+
+    [BUG FIXES]
+
+    * Add missing hooks before_cart_add_validate and
+      before_cart_remove_validate.
+    * Fix setup of account providers with empty value for extra fields.
+
 0.0010 Thu Oct 13 09:25:25 2011 EDT
 
     [ENHANCEMENTS]
