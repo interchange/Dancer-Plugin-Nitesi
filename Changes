@@ -1,5 +1,11 @@
 Revision history for Dancer::Plugin::Nitesi
 
+0.0012 Sun Oct 23 10:54:31 2011 CEST
+
+    [BUG FIXES]
+
+    * Add Dancer::Plugin::Database to dependencies.
+
 0.0011 Wed Oct 19 15:34:13 2011 CEST
 
     [BUG FIXES]
