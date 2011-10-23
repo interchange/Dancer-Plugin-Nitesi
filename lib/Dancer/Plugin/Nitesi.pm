@@ -217,7 +217,7 @@ sub _config_to_array {
     my @values;
 
     if (defined $config) {
-	@values = split(/\s+,\s+/, $config);
+	@values = split(/\s*,\s*/, $config);
 	return \@values;
     }
 
