@@ -54,6 +54,7 @@ sub load {
     $code = $self->{sqla}->select_field(table => 'carts', field => 'code', where => {name => $self->name, uid => $uid});
     
     unless ($code) {
+	$self->{id} = 0;
 	return;
     }
     $self->{id} = $code;
