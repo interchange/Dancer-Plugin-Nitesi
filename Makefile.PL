@@ -17,6 +17,7 @@ WriteMakefile(
 	'Nitesi'     => 0.0010,
 	'Nitesi::DBI' => 0.0010,
         'Dancer'     => 1.3071,
+	'Dancer::Plugin::Database' => 0,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'Dancer-Plugin-Nitesi-*' },
