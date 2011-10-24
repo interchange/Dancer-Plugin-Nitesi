@@ -45,6 +45,11 @@ You can use multiple carts like that:
     cart('wishlist')->add({sku => 'ABC', name => 'Foobar', quantity => 1, price => 42});
     cart('wishlist')->total;
 
+The DBI backend (L<Dancer::Plugin::Nitesi::Cart::DBI>) allows you to load carts
+of arbitrary users.
+
+    cart('', 123)->items;
+
 =head1 HOOKS
 
 This plugin installs the following hooks:
