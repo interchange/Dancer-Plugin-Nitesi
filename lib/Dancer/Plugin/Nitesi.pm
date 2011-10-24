@@ -157,10 +157,11 @@ sub _account {
 };
 
 register cart => sub {
-    my $name;
+    my ($name, $id);
 
-    if (@_) {
+    if (@_ >= 1) {
 	$name = shift;
+	$id = shift;
     }
     else {
 	$name = 'main';
@@ -168,7 +169,7 @@ register cart => sub {
 
     unless (exists vars->{nitesi_carts}->{$name}) {
 	# instantiate cart
-	vars->{nitesi_carts}->{$name} = _create_cart($name);
+	vars->{nitesi_carts}->{$name} = _create_cart($name, $id);
     }
 
     return vars->{'nitesi_carts'}->{$name};
@@ -225,7 +226,7 @@ sub _config_to_array {
 }
 
 sub _create_cart {
-    my $name = shift;
+    my ($name, $id) = @_;
     my ($backend, $backend_class, $cart, $cart_settings);
 
     if (exists $settings->{Cart}->{Backend}) {
@@ -253,7 +254,7 @@ sub _create_cart {
                                        settings => $cart_settings,
 				       run_hooks => sub {Dancer::Factory::Hook->instance->execute_hooks(@_)});
 
-    $cart->load(uid => _account()->uid);
+    $cart->load(uid => $id || _account()->uid);
 
     return $cart;
 }
