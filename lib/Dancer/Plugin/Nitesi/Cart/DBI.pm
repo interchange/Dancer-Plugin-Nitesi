@@ -116,9 +116,10 @@ sub _populate {
 
 sub _after_cart_add {
     my ($self, @args) = @_;
-    my ($item, $record);
+    my ($item, $update, $record);
 
     $item = $args[1];
+    $update = $args[2];
 
     unless ($self->{code}) {
 	# need to create cart first
@@ -130,10 +131,16 @@ sub _after_cart_add {
 						    where => {name => $self->name, uid => $self->{uid}});
     }
 
-    # add new item to database
-    $record = {cart => $self->{code}, sku => $item->{sku}, quantity => $item->{quantity}, position => 0};
-   
-    $self->{sqla}->insert('cart_products', $record);
+    if ($update) {
+	# update item in database
+	$record = {quantity => $item->{quantity}};
+	$self->{sqla}->update('cart_products', $record, {cart => $self->{code}, sku => $item->{sku}});
+    }
+    else {
+	# add new item to database
+	$record = {cart => $self->{code}, sku => $item->{sku}, quantity => $item->{quantity}, position => 0};
+	$self->{sqla}->insert('cart_products', $record);
+    }
 }
 
 sub _after_cart_remove {
