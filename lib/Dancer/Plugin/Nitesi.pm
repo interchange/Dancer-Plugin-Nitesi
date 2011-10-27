@@ -164,7 +164,7 @@ sub _account {
 register cart => sub {
     my ($name, $id, $token);
 
-    if (@_ >= 1) {
+    if (@_ > 1) {
 	$name = shift;
 	$id = shift;
 	$token = "$name\0$id";
