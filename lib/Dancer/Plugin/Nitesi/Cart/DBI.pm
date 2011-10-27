@@ -118,6 +118,11 @@ sub _after_cart_add {
     my ($self, @args) = @_;
     my ($item, $update, $record);
 
+    unless ($self eq $args[0]) {
+	# not our cart
+	return;
+    }
+
     $item = $args[1];
     $update = $args[2];
 
@@ -146,6 +151,11 @@ sub _after_cart_add {
 sub _after_cart_remove {
     my ($self, @args) = @_;
     my ($item);
+
+    unless ($self eq $args[0]) {
+	# not our cart
+	return;
+    }
 
     $item = $args[1];
 
