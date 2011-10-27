@@ -2,7 +2,7 @@ NAME
     Dancer::Plugin::Nitesi - Nitesi Shop Machine plugin for Dancer
 
 VERSION
-    Version 0.0012
+    Version 0.0020
 
 SYNOPSIS
         use Dancer::Plugin::Nitesi;
@@ -22,6 +22,11 @@ CARTS
 
         cart('wishlist')->add({sku => 'ABC', name => 'Foobar', quantity => 1, price => 42});
         cart('wishlist')->total;
+
+    The DBI backend (Dancer::Plugin::Nitesi::Cart::DBI) allows you to load
+    carts of arbitrary users.
+
+        cart('', 123)->items;
 
 HOOKS
     This plugin installs the following hooks:

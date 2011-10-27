@@ -1,5 +1,17 @@
 Revision history for Dancer::Plugin::Nitesi
 
+0.0020 Thu Oct 27 08:20:56 2011 CEST
+
+    [ENHANCEMENTS]
+
+    * Allow loading carts from different users (only DBI backend).
+    * Extend cart syntax to allow addressing carts by id.
+
+    [BUG FIXES]
+
+    * Let load method initialize id as zero if database record hasn't been created yet.
+    * Fix split in Dancer::Plugin::Nitesi's _config_to_array function.
+
 0.0012 Sun Oct 23 10:54:31 2011 CEST
 
     [BUG FIXES]
