@@ -159,7 +159,7 @@ sub _after_cart_remove {
 
     $item = $args[1];
 
-    $self->{sqla}->delete('cart_products', {cart => $self->{code}, sku => $item->{sku}});
+    $self->{sqla}->delete('cart_products', {cart => $self->{id}, sku => $item->{sku}});
 }
 
 =head1 AUTHOR
