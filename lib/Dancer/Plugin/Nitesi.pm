@@ -165,12 +165,12 @@ register cart => sub {
     my ($name, $id, $token);
 
     if (@_ > 1) {
-	$name = shift;
+	$name = shift || 'main';
 	$id = shift;
 	$token = "$name\0$id";
     }
     elsif (@_ == 1) {
-	$name = shift;
+	$name = shift || 'main';
 	$token = $name;
     }
     else {
