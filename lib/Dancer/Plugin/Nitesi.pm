@@ -126,14 +126,14 @@ my $settings = undef;
 my %acct_providers;
 my %carts;
 
-before sub {
+hook 'before' => sub {
     # find out which backend we are using
     my ($backend, $backend_class, $backend_obj);
 
     _load_settings() unless $settings;
 };
 
-after sub {
+hook 'after' => sub {
     my $carts;
 
     # save all carts
