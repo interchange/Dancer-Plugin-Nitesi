@@ -265,14 +265,7 @@ sub _create_cart {
                                        settings => $cart_settings,
 				       run_hooks => sub {Dancer::Factory::Hook->instance->execute_hooks(@_)});
 
-    if ($id && $name eq 'id') {
-	# load cart by cart code
-	$cart->load_by_id($id)
-    }
-    else {
-	# load cart by name and uid
-	$cart->load(uid => $id || _account()->uid);
-    }
+    $cart->load(uid => $id || _account()->uid);
 
     return $cart;
 }
