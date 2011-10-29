@@ -14,7 +14,7 @@ WriteMakefile(
     PREREQ_PM => {
         'Test::More' => 0,
         'YAML'       => 0,
-	'Nitesi'     => 0.0020,
+	'Nitesi'     => 0.0030,
 	'Nitesi::DBI' => 0.0020,
         'Dancer'     => 1.3071,
 	'Dancer::Plugin::Database' => 0,
