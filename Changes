@@ -1,5 +1,20 @@
 Revision history for Dancer::Plugin::Nitesi
 
+0.0030 Sat Oct 29 13:54:31 2011 CEST
+
+    [API CHANGES]
+
+    * Retract cart() syntax change which allowed addressing carts by id.
+
+    [BUG FIXES]
+
+    * Fix spurious bug in DBI backend caused by multiple invocations of cart hooks.
+    * Fix wrong hash key used in query for removing items from the cart.
+    * Fix messed up cart items caused by empty cart name.
+    * Fix cart name in cart subroutine.
+    * Replace deprecated Dancer keywords before and after with hooks.
+    * Fix Perl warning in cart subroutine.
+
 0.0020 Thu Oct 27 08:20:56 2011 CEST
 
     [ENHANCEMENTS]
