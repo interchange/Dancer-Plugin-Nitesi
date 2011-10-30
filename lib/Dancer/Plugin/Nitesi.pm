@@ -31,6 +31,7 @@ our $VERSION = '0.0030';
 
     cart->add({sku => 'ABC', name => 'Foobar', quantity => 1, price => 42});
     cart->items();
+    cart->clear();
 
     account->login(username => 'frank@nitesi.com', password => 'nevairbe');
     account->acl(check => 'view_prices');
@@ -73,6 +74,14 @@ Triggered before item is removed from the cart.
 
 Triggered after item is removed from the cart.
 Used by DBI backend to delete item from the database.
+
+=item before_cart_clear
+
+Triggered before cart is cleared.
+
+=item after_cart_clear
+
+Triggered after cart is cleared.
 
 =back
 
