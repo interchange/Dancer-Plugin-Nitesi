@@ -119,6 +119,7 @@ Dancer::Factory::Hook->instance->install_hooks(qw/before_cart_add_validate
         before_cart_add after_cart_add
         before_cart_remove_validate
 	before_cart_remove after_cart_remove
+        before_cart_clear after_cart_clear
 /);
 
 my $settings = undef;

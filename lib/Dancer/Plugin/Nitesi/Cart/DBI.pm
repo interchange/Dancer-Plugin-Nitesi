@@ -31,6 +31,7 @@ sub init {
 
     hook 'after_cart_add' => sub {$self->_after_cart_add(@_)};
     hook 'after_cart_remove' => sub {$self->_after_cart_remove(@_)};
+    hook 'after_cart_clear' => sub {$self->_after_cart_clear(@_)};
 }
 
 =head2 load
@@ -128,6 +129,17 @@ sub _after_cart_remove {
     $item = $args[1];
 
     $self->{sqla}->delete('cart_products', {cart => $self->{id}, sku => $item->{sku}});
+}
+
+sub _after_cart_clear {
+    my ($self, @args) = @_;
+
+    unless ($self eq $args[0]) {
+	# not our cart
+	return;
+    }
+
+    $self->{sqla}->delete('cart_products', {cart => $self->{id}});
 }
 
 =head1 AUTHOR
