@@ -83,6 +83,14 @@ Triggered before cart is cleared.
 
 Triggered after cart is cleared.
 
+=item before_cart_rename
+
+Triggered before cart is renamed.
+
+=item after cart_rename
+
+Triggered after cart is renamed.
+
 =back
 
 =head1 CONFIGURATION
