@@ -19,11 +19,11 @@ Dancer::Plugin::Nitesi - Nitesi Shop Machine plugin for Dancer
 
 =head1 VERSION
 
-Version 0.0030
+Version 0.0031
 
 =cut
 
-our $VERSION = '0.0030';
+our $VERSION = '0.0031';
 
 =head1 SYNOPSIS
 
