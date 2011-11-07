@@ -51,6 +51,31 @@ of arbitrary users.
 
     cart('', 123)->items;
 
+=head1 ACCOUNTS
+
+The account keyword returns a L<Nitesi::Account::Manager> object with the
+corresponding methods.
+
+Login to an account:
+
+    account->login(username => 'frank@nitesi.com', password => 'nevairbe');
+
+Logout:
+
+    account->logout();
+
+Check permissions:
+
+    account->acl(check => 'view_prices');
+
+Change password for current account:
+
+    account->password('nevairbe');
+
+Change password for other account:
+
+    account->password(username => 'frank@nitesi.com', password => 'nevairbe');
+
 =head1 HOOKS
 
 This plugin installs the following hooks:
