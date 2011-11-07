@@ -263,6 +263,7 @@ sub _load_account_providers {
 	    return [['Nitesi::Account::Provider::DBI',
 		     dbh => database($settings->{Account}->{Connection}),
 		     fields => _config_to_array($settings->{Account}->{Fields}),
+		     inactive => $settings->{Account}->{inactive},
 		    ]];
 	}
     }
