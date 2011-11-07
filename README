@@ -2,13 +2,14 @@ NAME
     Dancer::Plugin::Nitesi - Nitesi Shop Machine plugin for Dancer
 
 VERSION
-    Version 0.0030
+    Version 0.0031
 
 SYNOPSIS
         use Dancer::Plugin::Nitesi;
 
         cart->add({sku => 'ABC', name => 'Foobar', quantity => 1, price => 42});
         cart->items();
+        cart->clear();
 
         account->login(username => 'frank@nitesi.com', password => 'nevairbe');
         account->acl(check => 'view_prices');
@@ -44,6 +45,18 @@ HOOKS
     after_cart_remove
         Triggered after item is removed from the cart. Used by DBI backend
         to delete item from the database.
+
+    before_cart_clear
+        Triggered before cart is cleared.
+
+    after_cart_clear
+        Triggered after cart is cleared.
+
+    before_cart_rename
+        Triggered before cart is renamed.
+
+    after cart_rename
+        Triggered after cart is renamed.
 
 CONFIGURATION
     The default configuration is as follows:

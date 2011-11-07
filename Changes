@@ -1,5 +1,16 @@
 Revision history for Dancer::Plugin::Nitesi
 
+0.0031 Mon Nov  7 08:58:23 2011 CET
+
+    [BUG FIXES]
+
+    * Raise minimum version for Nitesi::DBI requisite
+
+    [ENHANCEMENTS]
+
+    * Add before_cart_clear and after_cart_clear hooks.
+    * Add before_cart_rename and after_cart_rename hooks.
+
 0.0030 Sat Oct 29 13:54:31 2011 CEST
 
     [API CHANGES]
