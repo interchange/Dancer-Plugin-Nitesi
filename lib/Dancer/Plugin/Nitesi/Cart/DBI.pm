@@ -24,10 +24,19 @@ use base 'Nitesi::Cart';
 
 sub init {
     my ($self, %args) = @_;
+    my (%q_args);
 
     $self->{dbh} = database();
-    $self->{sqla} = Nitesi::Query::DBI->new(dbh => database());
+    %q_args = (dbh => $self->{dbh});
+
+    if ($args{settings}->{log_queries}) {
+	$q_args{log_queries} = sub {
+	    Dancer::Logger::debug(@_);
+	};
+    };
+
     $self->{settings} = $args{settings} || {};
+    $self->{sqla} = Nitesi::Query::DBI->new(%q_args);
 
     hook 'after_cart_add' => sub {$self->_after_cart_add(@_)};
     hook 'after_cart_remove' => sub {$self->_after_cart_remove(@_)};
