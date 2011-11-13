@@ -1,7 +1,15 @@
 Revision history for Dancer::Plugin::Nitesi
 
+0.0032 Sun Nov 13 16:41:59 2011 CET
+
+    [BUG FIXES]
+
+    * Set PATH environment variable to fixed system directories to
+      avoid test breakage with Crypt::Password 0.06.
+
     [ENHANCEMENTS]
 
+    * Pass inactive setting for accounts to manager object.
 
     [DOCUMENTATION]
 
