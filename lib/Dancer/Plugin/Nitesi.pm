@@ -170,13 +170,6 @@ my $settings = undef;
 my %acct_providers;
 my %carts;
 
-hook 'before' => sub {
-    # find out which backend we are using
-    my ($backend, $backend_class, $backend_obj);
-
-    _load_settings() unless $settings;
-};
-
 hook 'after' => sub {
     my $carts;
 
@@ -248,10 +241,12 @@ register query => sub {
 register_plugin;
 
 sub _load_settings {
-    $settings = plugin_setting;
+    $settings ||= plugin_setting;
 }
 
 sub _load_account_providers {
+    _load_settings();
+
     # setup account providers
     if (exists $settings->{Account}->{Provider}) {
 	if ($settings->{Account}->{Provider} eq 'DBI') {
@@ -280,6 +275,8 @@ sub _config_to_array {
 sub _create_cart {
     my ($name, $id) = @_;
     my ($backend, $backend_class, $cart, $cart_settings);
+
+    _load_settings();
 
     if (exists $settings->{Cart}->{Backend}) {
 	$backend = $settings->{Cart}->{Backend};
@@ -314,6 +311,8 @@ sub _create_cart {
 sub _update_session {
     my ($function, $acct) = @_;
     my ($key, $sref);
+
+    _load_settings();
 
     # determine session key
     $key = $settings->{Account}->{Session}->{Key} || 'user';
