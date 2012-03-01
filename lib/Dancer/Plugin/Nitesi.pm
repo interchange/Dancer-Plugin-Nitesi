@@ -91,6 +91,15 @@ Triggered before item is added to the cart.
 Triggered after item is added to the cart.
 Used by DBI backend to save item to the database.
 
+=item before_cart_update
+
+Triggered before cart item is updated (changing quantity).
+
+=item after_cart_update
+
+Triggered after cart item is updated (changing quantity).
+Used by DBI backend to update item to the database.
+
 =item before_cart_remove
 
 Triggered before item is removed from the cart.
@@ -159,6 +168,7 @@ put into the session after a successful login:
 
 Dancer::Factory::Hook->instance->install_hooks(qw/before_cart_add_validate
         before_cart_add after_cart_add
+        before_cart_update after_cart_update
         before_cart_remove_validate
 	before_cart_remove after_cart_remove
         before_cart_rename after_cart_rename

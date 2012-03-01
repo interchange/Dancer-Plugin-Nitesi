@@ -39,6 +39,7 @@ sub init {
     $self->{sqla} = Nitesi::Query::DBI->new(%q_args);
 
     hook 'after_cart_add' => sub {$self->_after_cart_add(@_)};
+    hook 'after_cart_update' => sub {$self->_after_cart_update(@_)};
     hook 'after_cart_remove' => sub {$self->_after_cart_remove(@_)};
     hook 'after_cart_rename' => sub {$self->_after_cart_rename(@_)};
     hook 'after_cart_clear' => sub {$self->_after_cart_clear(@_)};
@@ -125,6 +126,28 @@ sub _after_cart_add {
 	$record = {cart => $self->{code}, sku => $item->{sku}, quantity => $item->{quantity}, position => 0};
 	$self->{sqla}->insert('cart_products', $record);
     }
+}
+
+sub _after_cart_update {
+    my ($self, @args) = @_;
+    my ($item, $new_item, $count);
+
+    unless ($self eq $args[0]) {
+	# not our cart
+	return;
+    }
+
+    $item = $args[1];
+    $new_item = $args[2];
+
+    # update item in database
+    Dancer::Logger::debug("Updating cart products with: ", $new_item);
+
+    $count = $self->{sqla}->update(table => 'cart_products', 
+				   set => $new_item, 
+				   where => {cart => $self->{id}, sku => $item->{sku}});
+
+    Dancer::Logger::debug("Items updated: $count.");
 }
 
 sub _after_cart_remove {
