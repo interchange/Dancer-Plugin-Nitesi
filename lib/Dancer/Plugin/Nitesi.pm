@@ -230,19 +230,25 @@ register cart => sub {
 };
 
 register query => sub {
-    my ($name, $q);
+    my ($name, $arg, $q, $dbh);
 
     if (@_) {
-	$name = shift;
+        $name = shift;
+        $arg = $name;
     }
     else {
-	$name = '';
+        $name = '';
+        $arg = undef;
     }
-
+    
     unless (exists vars->{'nitesi_query'}->{$name}) {
-	# not yet used in this request
-	$q = Nitesi::Query::DBI->new(dbh => database());
-	vars->{'nitesi_query'}->{$name} = $q;
+        # not yet used in this request
+        unless ($dbh = database($arg)) {
+            die "No database handle for database '$name'";
+        }
+
+        $q = Nitesi::Query::DBI->new(dbh => $dbh);
+        vars->{'nitesi_query'}->{$name} = $q;
     }
 
     return vars->{nitesi_query}->{$name};
