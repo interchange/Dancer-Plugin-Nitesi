@@ -197,12 +197,12 @@ sub _account {
     my $acct;
 
     unless (vars->{'nitesi_account'}) {
-	# not yet used in this request
-	$acct = Nitesi::Account::Manager->instance(provider_sub => \&_load_account_providers, 
-						   session_sub => \&_update_session);
-	$acct->init_from_session;
+        # not yet used in this request
+        $acct = Nitesi::Account::Manager->new(provider_sub => \&_load_account_providers,
+                                              session_sub => \&_update_session);
+        $acct->init_from_session;
 
-	var nitesi_account => $acct;
+        var nitesi_account => $acct;
     }
 
     return vars->{'nitesi_account'};
