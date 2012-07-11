@@ -302,8 +302,35 @@ sub _create_cart {
     }
 
     # check for specific settings for this cart name
-    if (exists $settings->{Cart}->{Carts}->{$name}) {
-	$cart_settings = $settings->{Cart}->{Carts}->{$name};
+    if (exists $settings->{Cart}->{Carts}) {
+        my $sref = $settings->{Cart}->{Carts};
+
+        if (ref($sref) eq 'ARRAY') {
+            # walk through settings
+            for my $try (@$sref) {
+                if (exists $try->{name}
+                    && $name eq $try->{name}) {
+                    $cart_settings = $try;
+                    last;
+                }
+                if (exists $try->{match}) {
+                    my $match = qr/$try->{match}/;
+
+                    if ($name =~ /$match/) {
+                        $cart_settings = $try;
+                        last;
+                    }
+                }
+            }
+        }
+        elsif (ref($sref) eq 'HASH') {
+            if (exists $settings->{Cart}->{Carts}->{$name}) {
+                $cart_settings = $settings->{Cart}->{Carts}->{$name};
+            }
+        }
+        else {
+            die "Invalid cart settings.";
+        }
     }
 
     # determine backend class name
