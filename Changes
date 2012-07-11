@@ -1,5 +1,22 @@
 Revision history for Dancer::Plugin::Nitesi
 
+0.0050 Wed Jul 11 14:37:01 2012 CEST
+
+    [ENHANCEMENTS]
+
+    * Add before_cart_update and after_cart_update hooks.
+    * Force cart creation and cart selection by identifier.
+
+    [BUG FIXES]
+
+    * Fix a quirk retrieving a database handle.
+
+    * Load plugin settings from the functions defining the keywords
+      instead of using before hook. This fixes problems caused by
+      using Dancer::Plugin::Nitesi within a commandline script. 
+
+    * Disregard undefined identifiers for cart tokens.
+
 0.0032 Sun Nov 13 16:41:59 2011 CET
 
     [BUG FIXES]
