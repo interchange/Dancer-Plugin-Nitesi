@@ -74,6 +74,12 @@ sub load {
     $self->_load_cart;    
 }
 
+=head2 id
+
+Return cart identifier.
+
+=cut
+
 sub id {
     my $self = shift;
 
