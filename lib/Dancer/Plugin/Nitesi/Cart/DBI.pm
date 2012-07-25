@@ -126,8 +126,9 @@ sub _load_cart {
                  [qw/products.sku products.name cart_products.quantity/],
                  join => $self->{settings}->{join} ||
                  [qw/carts code=cart cart_products sku=sku products/],
-                 where => {'carts.code' => $self->{id}},
-                 );
+                 where => {'carts.code' => $self->{id},
+                          '-not_bool' => 'inactive',
+                          });
 
     # retrieve items from database
     my $result = $self->{sqla}->select(%specs);
