@@ -81,6 +81,10 @@ Change password for other account:
 
     account->password(username => 'frank@nitesi.com', password => 'nevairbe');
 
+Create account:
+
+    account->create(email => 'fina@nitesi.com');
+
 =head1 HOOKS
 
 This plugin installs the following hooks:
