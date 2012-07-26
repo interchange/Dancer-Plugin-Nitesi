@@ -37,6 +37,11 @@ our $VERSION = '0.0051';
     account->acl(check => 'view_prices');
     account->logout();
 
+=head1 DESCRIPTION
+
+This dancer plugin gives you access to the account and cart functions of
+the Nitesi shop machine.
+
 =head1 CARTS
 
 The cart keyword returns a L<Nitesi::Cart> object with the corresponding methods. 
