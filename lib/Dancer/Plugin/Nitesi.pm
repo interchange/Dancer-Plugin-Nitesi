@@ -5,9 +5,12 @@ use strict;
 use warnings;
 
 use Nitesi::Account::Manager;
+use Nitesi::Product;
 use Nitesi::Cart;
 use Nitesi::Class;
 use Nitesi::Query::DBI;
+
+use Moo::Role;
 
 use Dancer ':syntax';
 use Dancer::Plugin;
@@ -148,6 +151,10 @@ The default configuration is as follows:
           Provider: DBI
       Cart:
         Backend: Session
+      Product:
+        backend: DBI
+        table: products
+        key: sku
 
 =head2 ACCOUNT
 
@@ -217,6 +224,200 @@ sub _account {
     return vars->{'nitesi_account'};
 };
 
+sub _api_object {
+    my (%args) = @_;
+    my ($api_class, $api_object, $settings_class, $backend, $sname, $provider,
+        $provider_settings, $o_settings, $backend_settings, @roles);
+
+    _load_settings();
+
+    $sname = ucfirst($args{name});
+
+    # determine backend
+    if ($args{backend}) {
+        $backend = $args{backend};
+    }
+    elsif (exists $settings->{$sname}->{providers}) {
+        if ($provider = $settings->{Product}->{default_provider}) {
+            $provider_settings =  $settings->{Product}->{providers}->{$provider};
+
+            $backend = $provider_settings->{backend} || 'DBI';
+        }
+    }
+    else {
+        $backend = 'DBI';
+    }
+
+    # check whether base class for this object is overridden in the settings
+    if (exists $settings->{$sname}->{class}) {
+        $api_class = $settings->{$sname}->{class};
+    }
+    else {
+        $api_class = $args{class};
+    }
+
+    # create API object
+    my (%api_info, $o_key);
+
+    $api_object = Nitesi::Class->instantiate($api_class,
+					     api_class => $api_class,
+					     api_name => $args{name});
+
+    unless ($api_object) {
+        die "Failed to create class $api_class: $@";
+    }
+
+    $api_info{$api_class} = $api_object->api_info;
+    $o_key = $api_info{$api_class}->{key};
+
+    # load Dancer settings for this backend
+    $settings_class = "Dancer::Plugin::Nitesi::Backend::$backend";
+
+    $o_settings = Nitesi::Class->instantiate($settings_class);
+    $backend_settings = $o_settings->params;
+
+    # load roles for this API object
+    for my $role_name (@{$args{roles} || []}) {
+        Nitesi::Class->load($role_name);
+        $api_info{$role_name} = $role_name->api_info;
+        push (@roles, $role_name);
+    }
+
+    # load backend class
+    my $backend_class = "Nitesi::Backend::$backend";
+    Nitesi::Class->load($backend_class);
+
+    # apply backend role to navigation object
+    my ($key, $value);
+
+    Moo::Role->apply_roles_to_object($api_object, @roles, $backend_class);
+
+    while (($key, $value) = each %$backend_settings) {
+        $api_object->$key($value);
+    }
+
+    if ($settings->{$sname}->{field_map}) {
+        $api_object->field_map($settings->{$sname}->{field_map});
+    }
+
+    $api_object->api_info(\%api_info);
+
+    if ($args{$o_key}) {
+        $api_object->$o_key($args{$o_key});
+    }
+
+    return $api_object;
+}
+
+register shop_address => sub {
+    my ($aid) = @_;
+    my ($address);
+
+    $address = _api_object(name => 'address',
+                           class => 'Nitesi::Address',
+                           aid => $aid,
+        );
+
+    return $address;
+};
+
+register shop_merchandising => sub {
+    my ($code) = @_;
+    my ($object);
+
+    $object = _api_object(name => 'merchandising',
+                          class => 'Nitesi::Merchandising',
+                          code => $code,
+        );
+
+    return $object;
+};
+
+register shop_transaction => sub {
+    my ($code) = @_;
+    my ($transaction);
+
+    $transaction = _api_object(name => 'transaction',
+                               class => 'Nitesi::Transaction',
+                               code => $code,
+        );
+
+    return $transaction;
+};
+
+register shop_navigation => sub {
+    my ($code) = @_;
+    my ($backend, $key, $value, $nav_class, $nav_object, $provider_settings, $settings_class, $o_settings, $backend_class, $backend_params, $backend_settings);
+    my (%api_info);
+
+    _load_settings();
+
+    $provider_settings = {};
+
+    $backend = 'DBI';
+
+    # create navigation object
+    $nav_class = 'Nitesi::Navigation';
+    $nav_object = Nitesi::Class->instantiate($nav_class,
+                                             api_class => $nav_class,
+                                             api_name => 'navigation');
+    $api_info{$nav_class} = $nav_class->api_info;
+
+    # load Dancer support for the backend
+    $settings_class = "Dancer::Plugin::Nitesi::Backend::$backend";
+
+    $o_settings = Nitesi::Class->instantiate($settings_class);
+    $backend_settings = $o_settings->params;
+
+    # load backend class
+    $backend_class = "Nitesi::Backend::$backend";
+    Nitesi::Class->load($backend_class);
+
+    # apply backend role to navigation object
+    Moo::Role->apply_roles_to_object($nav_object, $backend_class);
+
+    while (($key, $value) = each %$backend_settings) {
+        $nav_object->$key($value);
+    }
+
+    $nav_object->api_info(\%api_info);
+
+    if ($code) {
+        $nav_object->code($code);
+    }
+
+    return $nav_object;
+};
+
+register shop_product => sub {
+    my ($sku, $backend) = @_;
+    my (%api_params, $backend_params, $settings_class, $o_settings, $backend_class, $o_backend,
+	$provider, $provider_settings, $backend_settings);
+
+    %api_params = (name => 'product',
+                   class => 'Nitesi::Product',
+                   roles => ['Nitesi::Inventory'],
+        );
+
+    if (defined $sku) {
+        $api_params{sku} = $sku;
+    }
+
+    return _api_object(%api_params);
+};
+
+register shop_media => sub {
+    my ($code) = @_;
+    my ($object);
+     
+    $object = _api_object(name => 'media',
+                               class => 'Nitesi::Media',
+                               code => $code,
+        );
+    
+    return $object;
+};
+
 register cart => sub {
     my ($name, $id, $token);
 
@@ -274,15 +475,18 @@ sub _load_account_providers {
 
     # setup account providers
     if (exists $settings->{Account}->{Provider}) {
-	if ($settings->{Account}->{Provider} eq 'DBI') {
-	    # we need to pass $dbh
-	    return [['Nitesi::Account::Provider::DBI',
-		     dbh => database($settings->{Account}->{Connection}),
-		     fields => _config_to_array($settings->{Account}->{Fields}),
-		     inactive => $settings->{Account}->{inactive},
-		    ]];
-	}
+        if ($settings->{Account}->{Provider} eq 'DBI') {
+            return [['Nitesi::Account::Provider::DBI',
+                     dbh => database($settings->{Account}->{Connection}),
+                     fields => _config_to_array($settings->{Account}->{Fields}),
+                     inactive => $settings->{Account}->{inactive},
+                    ]];
+        }
     }
+
+    # DBI provider is the default
+    return [['Nitesi::Account::Provider::DBI',
+             dbh => database]];
 }
 
 sub _config_to_array {
