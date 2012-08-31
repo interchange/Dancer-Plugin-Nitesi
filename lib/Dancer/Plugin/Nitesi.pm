@@ -175,14 +175,14 @@ put into the session after a successful login:
 
 =cut
 
-Dancer::Factory::Hook->instance->install_hooks(qw/before_cart_add_validate
-        before_cart_add after_cart_add
-        before_cart_update after_cart_update
-        before_cart_remove_validate
-	before_cart_remove after_cart_remove
-        before_cart_rename after_cart_rename
-        before_cart_clear after_cart_clear
-/);
+register_hook(qw/before_cart_add_validate
+                 before_cart_add after_cart_add
+                 before_cart_update after_cart_update
+                 before_cart_remove_validate
+                 before_cart_remove after_cart_remove
+                 before_cart_rename after_cart_rename
+                 before_cart_clear after_cart_clear
+                /);
 
 my $settings = undef;
 
@@ -353,7 +353,7 @@ sub _create_cart {
     $cart = Nitesi::Class->instantiate($backend_class,
 				       name => $name,
                                        settings => $cart_settings,
-				       run_hooks => sub {Dancer::Factory::Hook->instance->execute_hooks(@_)});
+				       run_hooks => sub {execute_hook(@_)});
 
     $cart->load(uid => $id || _account()->uid);
 
