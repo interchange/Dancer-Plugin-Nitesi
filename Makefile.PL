@@ -16,7 +16,7 @@ WriteMakefile(
         'YAML'       => 0,
 	'Nitesi'     => 0.0050,
 	'Nitesi::DBI' => 0.0050,
-        'Dancer'     => 1.3071,
+        'Dancer'     => 1.3098,
 	'Dancer::Plugin::Database' => 0,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
