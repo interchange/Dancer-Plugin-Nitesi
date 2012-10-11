@@ -347,46 +347,14 @@ register shop_transaction => sub {
 
 register shop_navigation => sub {
     my ($code) = @_;
-    my ($backend, $key, $value, $nav_class, $nav_object, $provider_settings, $settings_class, $o_settings, $backend_class, $backend_params, $backend_settings);
-    my (%api_info);
+    my ($navigation);
 
-    _load_settings();
+    $navigation = _api_object(name => 'navigation',
+                              class => 'Nitesi::Navigation',
+                              code => $code,
+        );
 
-    $provider_settings = {};
-
-    $backend = 'DBI';
-
-    # create navigation object
-    $nav_class = 'Nitesi::Navigation';
-    $nav_object = Nitesi::Class->instantiate($nav_class,
-                                             api_class => $nav_class,
-                                             api_name => 'navigation');
-    $api_info{$nav_class} = $nav_class->api_info;
-
-    # load Dancer support for the backend
-    $settings_class = "Dancer::Plugin::Nitesi::Backend::$backend";
-
-    $o_settings = Nitesi::Class->instantiate($settings_class);
-    $backend_settings = $o_settings->params;
-
-    # load backend class
-    $backend_class = "Nitesi::Backend::$backend";
-    Nitesi::Class->load($backend_class);
-
-    # apply backend role to navigation object
-    Moo::Role->apply_roles_to_object($nav_object, $backend_class);
-
-    while (($key, $value) = each %$backend_settings) {
-        $nav_object->$key($value);
-    }
-
-    $nav_object->api_info(\%api_info);
-
-    if ($code) {
-        $nav_object->code($code);
-    }
-
-    return $nav_object;
+    return $navigation;
 };
 
 register shop_product => sub {
