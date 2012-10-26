@@ -279,7 +279,10 @@ sub _api_object {
     # load roles for this API object
     for my $role_name (@{$args{roles} || []}) {
         Nitesi::Class->load($role_name);
-        $api_info{$role_name} = $role_name->api_info;
+        my $api_func = lc($role_name);
+        $api_func =~ s/^(.*)::([^:]+)$/$2/;
+        $api_func .= '_api_info';
+        $api_info{$role_name} = $role_name->$api_func;
         push (@roles, $role_name);
     }
 
