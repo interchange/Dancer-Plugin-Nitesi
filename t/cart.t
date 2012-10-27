@@ -8,6 +8,8 @@ use Dancer::Plugin::Nitesi;
 
 my ($sku, $ret);
 
+set plugins => {Nitesi => {Account => {Provider => 'Test'}}};
+
 $ret = cart->add(sku => 'FOO', name => 'Foo Shoes', price => 5, quantity => 2);
 
 ok ($ret, "Add Foo Shoes to cart.")
