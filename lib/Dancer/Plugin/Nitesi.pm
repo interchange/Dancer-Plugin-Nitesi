@@ -453,6 +453,19 @@ sub _load_account_providers {
                      inactive => $settings->{Account}->{inactive},
                     ]];
         }
+        else {
+            my $provider_class = $settings->{Account}->{Provider};
+
+            unless ($provider_class =~ /::/) {
+                $provider_class = "Nitesi::Account::Provider::$provider_class";
+            }
+
+            my %account_init = %{$settings->{Account}};
+
+            delete $account_init{Provider};
+
+            return [[$provider_class, %account_init]];
+        }
     }
 
     # DBI provider is the default
