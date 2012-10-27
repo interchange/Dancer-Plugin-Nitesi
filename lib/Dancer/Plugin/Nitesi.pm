@@ -12,7 +12,7 @@ use Nitesi::Query::DBI;
 
 use Moo::Role;
 
-use Dancer ':syntax';
+use Dancer qw(:syntax !before !after);
 use Dancer::Plugin;
 use Dancer::Plugin::Database;
 
