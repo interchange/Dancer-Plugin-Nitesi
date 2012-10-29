@@ -1,5 +1,29 @@
 Revision history for Dancer::Plugin::Nitesi
 
+0.0060 Mon Oct 29 08:10:31 2012 CET
+
+    [ENHANCEMENTS]
+
+    * Add new keywords shop_product, shop_navigation, shop_media,
+      shop_merchandising and shop_transaction.
+    * Use new Dancer keywords register_hook and execute_hook.
+
+    [BUG FIXES]
+
+    * Add support for other account providers than DBI.
+
+    [TESTS]
+
+    * Add tests for account keyword.
+    * Add tests for cart keyword.
+    * Remove -T commandline switch from load test to prevent test failures
+      in some environments.        
+
+    [DOCUMENTATION]
+
+    * Add description section to the main POD.
+    * Add create account example to the main POD.
+
 0.0051 Wed Jul 25 11:08:37 2012 CEST
 
     [BUG FIXES]

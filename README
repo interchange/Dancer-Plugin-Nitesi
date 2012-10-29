@@ -2,7 +2,7 @@ NAME
     Dancer::Plugin::Nitesi - Nitesi Shop Machine plugin for Dancer
 
 VERSION
-    Version 0.0051
+    Version 0.0060
 
 SYNOPSIS
         use Dancer::Plugin::Nitesi;
@@ -14,6 +14,10 @@ SYNOPSIS
         account->login(username => 'frank@nitesi.com', password => 'nevairbe');
         account->acl(check => 'view_prices');
         account->logout();
+
+DESCRIPTION
+    This dancer plugin gives you access to the account and cart functions of
+    the Nitesi shop machine.
 
 CARTS
     The cart keyword returns a Nitesi::Cart object with the corresponding
@@ -52,6 +56,10 @@ ACCOUNTS
     Change password for other account:
 
         account->password(username => 'frank@nitesi.com', password => 'nevairbe');
+
+    Create account:
+
+        account->create(email => 'fina@nitesi.com');
 
 HOOKS
     This plugin installs the following hooks:
@@ -100,6 +108,10 @@ CONFIGURATION
               Provider: DBI
           Cart:
             Backend: Session
+          Product:
+            backend: DBI
+            table: products
+            key: sku
 
   ACCOUNT
     Connection
