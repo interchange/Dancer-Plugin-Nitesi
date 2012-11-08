@@ -92,7 +92,16 @@ Create account:
 
 This plugin installs the following hooks:
 
+=head2 Add to cart
+
+The functions registered for these hooks receive the cart object
+and the item to be added as parameters.
+
 =over 4
+
+=item before_cart_add_validate
+
+Triggered before item is validated for adding to the cart.
 
 =item before_cart_add
 
@@ -103,6 +112,15 @@ Triggered before item is added to the cart.
 Triggered after item is added to the cart.
 Used by DBI backend to save item to the database.
 
+=back
+
+=head2 Update cart
+
+The functions registered for these hooks receive the cart object,
+the current item in the cart and the updated item.
+
+=over 4
+
 =item before_cart_update
 
 Triggered before cart item is updated (changing quantity).
@@ -112,14 +130,36 @@ Triggered before cart item is updated (changing quantity).
 Triggered after cart item is updated (changing quantity).
 Used by DBI backend to update item to the database.
 
+=back
+
+=head2 Remove from cart
+
+The functions registered for these hooks receive the cart object
+and the item to be added as parameters.
+
+=over 4
+
+=item before_cart_remove_validate
+
+Triggered before item is validated for removal.
+Receives cart object and item SKU.
+
 =item before_cart_remove
 
 Triggered before item is removed from the cart.
+Receives cart object and item.
 
 =item after_cart_remove
 
 Triggered after item is removed from the cart.
 Used by DBI backend to delete item from the database.
+Receives cart object and item.
+
+=back
+
+=head2 Clear cart
+
+=over 4
 
 =item before_cart_clear
 
@@ -129,11 +169,20 @@ Triggered before cart is cleared.
 
 Triggered after cart is cleared.
 
+=back
+
+=head2 Rename cart
+
+The functions registered for these hooks receive the cart object,
+the old name and the new name.
+
+=over 4
+
 =item before_cart_rename
 
 Triggered before cart is renamed.
 
-=item after cart_rename
+=item after_cart_rename
 
 Triggered after cart is renamed.
 
