@@ -39,6 +39,11 @@ sub _setup_routes {
     # update settings with defaults
     my $routes_config = _config_routes($plugin_config, \%route_defaults);
 
+    # routes for cart
+    my $cart_sub = Dancer::Plugin::Nitesi::Routes::Cart::cart_route($routes_config);
+    get '/cart' => $cart_sub;
+    post '/cart' => $cart_sub;
+
     # fallback route for flypage and navigation
     get qr{/(?<path>.*)} => sub {
         my $path = captures->{'path'};
@@ -80,9 +85,6 @@ sub _setup_routes {
         status 'not_found';
         forward 404;
     };
-
-    # routes for cart
-    post '/cart' => Dancer::Plugin::Nitesi::Routes::Cart::cart_route($routes_config);
 }
 
 sub _config_routes {
