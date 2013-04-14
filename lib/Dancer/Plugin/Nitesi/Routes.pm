@@ -13,12 +13,12 @@ Dancer::Plugin::Nitesi::Routes - Routes for Nitesi Shop Machine
 
 The template for each route type can be configured:
 
-plugins:
-  Nitesi::Routes:
-      cart:
-        template: cart
-      product:
-        template: product
+    plugins:
+      Nitesi::Routes:
+        cart:
+          template: cart
+        product:
+          template: product
 
 This sample configuration shows the current defaults.
 
