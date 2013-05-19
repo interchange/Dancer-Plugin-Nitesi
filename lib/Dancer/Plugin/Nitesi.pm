@@ -217,12 +217,14 @@ The default configuration is as follows:
           Session:
             Key: account
           Provider: DBI
-      Cart:
-        Backend: Session
-      Product:
-        backend: DBI
-        table: products
-        key: sku
+        Cart:
+          Backend: Session
+        Product:
+          backend: DBI
+          table: products
+          key: sku
+        Query:
+          log: 0
 
 =head2 ACCOUNT
 
@@ -247,6 +249,15 @@ put into the session after a successful login:
         Account:
           Provider: DBI
           Fields: first_name,last_name,city
+
+=head2 QUERY
+
+DBI queries can be logged with debug level as follows:
+
+    plugins:
+      Nitesi:
+        Query:
+          log: 1
 
 =cut
 
