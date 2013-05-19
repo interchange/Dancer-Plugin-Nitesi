@@ -90,6 +90,23 @@ Create account:
 
     account->create(email => 'fina@nitesi.com');
 
+=head1 ROUTES
+
+Standard routes can be registered by including the L<Dancer::Plugin::Nitesi::Routes>
+module and calling C<shop_set_routes> at the B<end> of your main application module:
+
+    package MyShopApp;
+
+    use Dancer ':syntax';
+    use Dancer::Plugin::Nitesi;
+    use Dancer::Plugin::Nitesi::Routes;
+
+    ...
+
+    shop_setup_routes;
+
+    1;
+
 =head1 HOOKS
 
 This plugin installs the following hooks:
