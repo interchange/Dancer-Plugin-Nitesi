@@ -42,8 +42,10 @@ our $VERSION = '0.0060';
 
 =head1 DESCRIPTION
 
-This dancer plugin gives you access to the account and cart functions of
-the Nitesi shop machine.
+This dancer plugin gives you access to the products, cart and account
+functions of the Nitesi shop machine.
+
+=head1 PRODUCTS
 
 =head1 CARTS
 
