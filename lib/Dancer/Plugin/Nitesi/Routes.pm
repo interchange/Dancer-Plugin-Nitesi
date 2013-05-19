@@ -47,9 +47,30 @@ sub _setup_routes {
     # fallback route for flypage and navigation
     get qr{/(?<path>.*)} => sub {
         my $path = captures->{'path'};
+        my $product;
 
-        # first check for a matching product
-        my $product = shop_product($path)->load;
+        # check for a matching product by uri
+        my $product_result = shop_product->search(where => {uri => $path});
+
+        if (@$product_result > 1) {
+            die "Ambigious result on path $path.";
+        }
+
+        if (@$product_result == 1) {
+            $product = Nitesi::Product->new($product_result->[0]);
+        }
+        else {
+            # check for a matching product by sku
+            $product = shop_product($path)->load;
+
+            if ($product->uri
+                && $product->uri ne $path) {
+                # permanent redirect to specific URL
+                debug "Redirecting permanently to product uri ", $product->uri,
+                    " for $path.";
+                return redirect(uri_for($product->uri), 301);
+            }
+        }
 
         if ($product) {
             if ($product->inactive) {
