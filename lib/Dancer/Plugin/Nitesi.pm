@@ -483,7 +483,7 @@ register cart => sub {
 };
 
 register query => sub {
-    my ($name, $arg, $q, $dbh);
+    my ($name, $arg, $q, $dbh, $debug);
 
     if (@_) {
         $name = shift;
@@ -500,7 +500,15 @@ register query => sub {
             die "No database handle for database '$name'";
         }
 
-        $q = Nitesi::Query::DBI->new(dbh => $dbh);
+        if ($settings->{Query}->{log}) {
+            $debug = sub {
+                my ($q, $vars, $args) = @_;
+
+                debug "Query: $q, variables: ", $vars, ", arguments: ", $args;
+            };
+        }
+
+        $q = Nitesi::Query::DBI->new(dbh => $dbh, log_queries => $debug);
         vars->{'nitesi_query'}->{$name} = $q;
     }
 
