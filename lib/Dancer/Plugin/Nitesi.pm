@@ -507,8 +507,13 @@ register query => sub {
     
     unless (exists vars->{'nitesi_query'}->{$name}) {
         # not yet used in this request
-        unless ($dbh = database($arg)) {
-            die "No database handle for database '$name'";
+        if (ref($arg) && $arg->isa('DBI::db')) {
+            $dbh = $arg;
+        }
+        else {
+            unless ($dbh = database($arg)) {
+                die "No database handle for database '$name'";
+            }
         }
 
         if ($settings->{Query}->{log}) {
