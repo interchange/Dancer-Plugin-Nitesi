@@ -271,8 +271,12 @@ hook 'after' => sub {
     $carts = vars->{'nitesi_carts'} || {};
 
     for (keys %$carts) {
-	$carts->{$_}->save();
+        if ($carts->{$_}->last_modified) {
+            $carts->{$_}->save();
+        }
     }
+
+    return;
 };
 
 register account => \&_account;
