@@ -250,6 +250,23 @@ put into the session after a successful login:
           Provider: DBI
           Fields: first_name,last_name,city
 
+=head2 PRODUCTS
+
+If your products table slightly varies from our default
+schema in L<Nitesi::Database::Schema>, you can adjust
+this in your configuration:
+
+    plugins:
+      Nitesi:
+        Product:
+          attributes:
+            name: description
+            short_description: comment_short
+
+This directs Dancer::Plugin::Nitesi to use the description
+field instead of the name field and the comment_short
+field instead of the short_description field.
+
 =head2 QUERY
 
 DBI queries can be logged with debug level as follows:
