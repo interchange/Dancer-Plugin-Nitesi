@@ -344,7 +344,9 @@ sub _api_object {
 
     $api_object = Nitesi::Class->instantiate($api_class,
 					     api_class => $api_class,
-					     api_name => $args{name});
+					     api_name => $args{name},
+                         api_attributes => $settings->{$sname}->{attributes},
+                         );
 
     unless ($api_object) {
         die "Failed to create class $api_class: $@";
