@@ -1,5 +1,25 @@
 Revision history for Dancer::Plugin::Nitesi
 
+0.0080 Sun May 26 12:47:18 2013 CEST
+
+    [ENHANCEMENTS]
+
+    * Add default routes for products, navigation and carts through
+      shop_setup_routes keyword.
+    * Save only modified carts in after hook.
+    * Pass attributes from plugin settings to API classes.
+    * Add debug feature to query keyword.
+    * Add Git repository to Makefile.PL.
+
+    [BUG FIXES]
+
+    * Execute POD tests only during release testing.
+
+    [DOCUMENTATION]
+
+    * Extend POD hooks section with missing validate hooks and subsections.
+      Fix missing underscore in after_cart_rename hook.
+
 0.0060 Mon Oct 29 08:10:31 2012 CET
 
     [ENHANCEMENTS]
