@@ -327,7 +327,8 @@ sub _account {
 sub _api_object {
     my (%args) = @_;
     my ($api_class, $api_object, $settings_class, $backend, $sname, $provider,
-        $provider_settings, $o_settings, $backend_settings, @roles);
+        $provider_settings, $o_settings, $backend_settings, @roles,
+        @settings_args);
 
     _load_settings();
 
@@ -375,7 +376,11 @@ sub _api_object {
     # load Dancer settings for this backend
     $settings_class = "Dancer::Plugin::Nitesi::Backend::$backend";
 
-    $o_settings = Nitesi::Class->instantiate($settings_class);
+    if ($settings->{Query}->{log}) {
+        @settings_args = (log_queries => \&_query_debug);
+    }
+
+    $o_settings = Nitesi::Class->instantiate($settings_class, @settings_args);
     $backend_settings = $o_settings->params;
 
     # load roles for this API object
@@ -536,11 +541,7 @@ register query => sub {
         }
 
         if ($settings->{Query}->{log}) {
-            $debug = sub {
-                my ($q, $vars, $args) = @_;
-
-                debug "Query: $q, variables: ", $vars, ", arguments: ", $args;
-            };
+            $debug = \&_query_debug;
         }
 
         $q = Nitesi::Query::DBI->new(dbh => $dbh, log_queries => $debug);
@@ -555,6 +556,12 @@ register_plugin;
 sub _load_settings {
     $settings ||= plugin_setting;
 }
+
+sub _query_debug {
+    my ($q, $vars, $args) = @_;
+
+    debug "Query: $q, variables: ", $vars, ", arguments: ", $args;
+};
 
 sub _load_account_providers {
     _load_settings();
