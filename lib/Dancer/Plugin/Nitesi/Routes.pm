@@ -61,7 +61,10 @@ sub _setup_routes {
         }
         else {
             # check for a matching product by sku
-            $product = shop_product($path)->load;
+            unless ($product = shop_product($path)->load) {
+                status 'not_found';
+                return forward 404;
+            }
 
             if ($product->uri
                 && $product->uri ne $path) {
