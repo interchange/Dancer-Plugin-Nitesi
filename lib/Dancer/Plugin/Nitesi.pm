@@ -107,6 +107,24 @@ module and calling C<shop_set_routes> at the B<end> of your main application mod
 
     1;
 
+=head2 VIEWS
+
+The following views (template files) are needed for your shopping cart
+application:
+
+=over 4
+
+=item product
+
+Product detail page, with product description, product price and
+"Add to cart" button.
+
+=item cart
+
+Cart page.
+
+=back
+
 =head1 HOOKS
 
 This plugin installs the following hooks:
