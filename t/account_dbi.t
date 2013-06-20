@@ -24,7 +24,7 @@ for my $testdb (@handles) {
     $tests += 7;
 }
 
-if (@handles) {
+if ($tests) {
     # determine number of tests
     plan tests => $tests;
 }
