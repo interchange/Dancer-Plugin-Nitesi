@@ -557,6 +557,13 @@ sub _load_settings {
     $settings ||= plugin_setting;
 }
 
+sub _reset_settings_and_vars {
+    $settings = plugin_setting;
+    vars->{'nitesi_query'} = {};
+    vars->{'nitesi_carts'} = {};
+    vars->{'nitesi_account'} = undef;
+}
+
 sub _query_debug {
     my ($q, $vars, $args) = @_;
 
@@ -569,8 +576,20 @@ sub _load_account_providers {
     # setup account providers
     if (exists $settings->{Account}->{Provider}) {
         if ($settings->{Account}->{Provider} eq 'DBI') {
+            my ($conn, $dbh);
+
+            $conn = $settings->{Account}->{Connection};
+
+            if (ref($conn) and $conn->isa('DBI::db')) {
+                # passing database handle directly, useful for testing
+                $dbh = $conn;
+            }
+            else {
+                $dbh = database($conn);
+            }
+
             return [['Nitesi::Account::Provider::DBI',
-                     dbh => database($settings->{Account}->{Connection}),
+                     dbh => $dbh,
                      fields => _config_to_array($settings->{Account}->{Fields}),
                      inactive => $settings->{Account}->{inactive},
                     ]];
