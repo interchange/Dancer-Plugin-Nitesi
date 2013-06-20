@@ -1,5 +1,19 @@
 Revision history for Dancer::Plugin::Nitesi
 
+0.0090 Thu Jun 20 09:59:11 2013 CEST
+
+    [ENHANCEMENTS]
+
+    * Apply log_queries function to Nitesi objects as well.
+
+    [TESTING]
+
+    * Add support for testing of account keyword with DBI provider.
+
+    [DOCUMENTATION]
+
+    * Add section about views needed for a shop application.
+
 0.0080 Sun May 26 12:47:18 2013 CEST
 
     [ENHANCEMENTS]

@@ -2,7 +2,7 @@ NAME
     Dancer::Plugin::Nitesi - Nitesi Shop Machine plugin for Dancer
 
 VERSION
-    Version 0.0080
+    Version 0.0090
 
 SYNOPSIS
         use Dancer::Plugin::Nitesi;
@@ -78,6 +78,17 @@ ROUTES
         shop_setup_routes;
 
         1;
+
+  VIEWS
+    The following views (template files) are needed for your shopping cart
+    application:
+
+    product
+        Product detail page, with product description, product price and
+        "Add to cart" button.
+
+    cart
+        Cart page.
 
 HOOKS
     This plugin installs the following hooks:
@@ -238,7 +249,7 @@ ACKNOWLEDGEMENTS
     framework and for their quick and competent support.
 
 LICENSE AND COPYRIGHT
-    Copyright 2010-2012 Stefan Hornburg (Racke).
+    Copyright 2010-2013 Stefan Hornburg (Racke).
 
     This program is free software; you can redistribute it and/or modify it
     under the terms of either: the GNU General Public License as published
