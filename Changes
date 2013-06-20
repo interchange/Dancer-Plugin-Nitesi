@@ -1,5 +1,11 @@
 Revision history for Dancer::Plugin::Nitesi
 
+0.0091 Thu Jun 20 11:23:45 2013 CEST
+
+    [BUG FIXES]
+
+    * Fix condition on number of tests for DBI account provider.
+
 0.0090 Thu Jun 20 09:59:11 2013 CEST
 
     [ENHANCEMENTS]
