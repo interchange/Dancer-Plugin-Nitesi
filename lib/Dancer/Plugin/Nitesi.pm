@@ -795,7 +795,7 @@ and for their quick and competent support.
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2010-2012 Stefan Hornburg (Racke).
+Copyright 2010-2013 Stefan Hornburg (Racke).
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of either: the GNU General Public License as published
