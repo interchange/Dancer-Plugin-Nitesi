@@ -10,6 +10,7 @@ MANIFEST.SKIP
 README
 t/00-load.t
 t/account.t
+t/account_dbi.t
 t/cart.t
 t/manifest.t
 t/pod-coverage.t
