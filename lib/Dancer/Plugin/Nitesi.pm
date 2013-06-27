@@ -538,6 +538,8 @@ register cart => sub {
 register query => sub {
     my ($name, $arg, $q, $dbh, $debug);
 
+    _load_settings();
+
     if (@_) {
         $name = shift;
         $arg = $name;
