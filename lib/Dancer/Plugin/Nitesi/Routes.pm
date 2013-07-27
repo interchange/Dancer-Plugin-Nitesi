@@ -57,7 +57,7 @@ sub _setup_routes {
         }
 
         if (@$product_result == 1) {
-            $product = Nitesi::Product->new($product_result->[0]);
+            $product = shop_product($product_result->[0]->{sku})->load;
         }
         else {
             # check for a matching product by sku
