@@ -61,17 +61,20 @@ sub _setup_routes {
         }
         else {
             # check for a matching product by sku
-            unless ($product = shop_product($path)->load) {
-                status 'not_found';
-                return forward 404;
-            }
+            $product = shop_product($path);
 
-            if ($product->uri
-                && $product->uri ne $path) {
-                # permanent redirect to specific URL
-                debug "Redirecting permanently to product uri ", $product->uri,
-                    " for $path.";
-                return redirect(uri_for($product->uri), 301);
+            if ($product->load) {
+                if ($product->uri
+                    && $product->uri ne $path) {
+                    # permanent redirect to specific URL
+                    debug "Redirecting permanently to product uri ", $product->uri,
+                        " for $path.";
+                    return redirect(uri_for($product->uri), 301);
+                }
+            }
+            else {
+                # no matching product found
+                undef $product;
             }
         }
 
