@@ -4,6 +4,7 @@ use Dancer ':syntax';
 use Dancer::Plugin;
 use Dancer::Plugin::Nitesi;
 use Dancer::Plugin::Nitesi::Routes::Cart;
+use Dancer::Plugin::Nitesi::Routes::Checkout;
 
 =head1 NAME
 
@@ -17,6 +18,8 @@ The template for each route type can be configured:
       Nitesi::Routes:
         cart:
           template: cart
+        checkout:
+          template: checkout
         product:
           template: product
 
@@ -31,6 +34,7 @@ register shop_setup_routes => sub {
 register_plugin;
 
 our %route_defaults = (cart => {template => 'cart'},
+                       checkout => {template => 'checkout'},
                        product => {template => 'product'});
 
 sub _setup_routes {
@@ -43,6 +47,11 @@ sub _setup_routes {
     my $cart_sub = Dancer::Plugin::Nitesi::Routes::Cart::cart_route($routes_config);
     get '/cart' => $cart_sub;
     post '/cart' => $cart_sub;
+
+    # routes for checkout
+    my $checkout_sub = Dancer::Plugin::Nitesi::Routes::Checkout::checkout_route($routes_config);
+    get '/checkout' => $checkout_sub;
+    post '/checkout' => $checkout_sub;
 
     # fallback route for flypage and navigation
     get qr{/(?<path>.*)} => sub {
