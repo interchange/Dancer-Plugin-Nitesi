@@ -123,7 +123,7 @@ sub _load_cart {
 
     # build query for item retrieval
     my %specs = (fields => $self->{settings}->{fields} || 
-                 [qw/products.sku products.name cart_products.quantity/],
+                 [qw/products.sku products.name products.price cart_products.quantity/],
                  join => $self->{settings}->{join} ||
                  [qw/carts code=cart cart_products sku=sku products/],
                  where => {'carts.code' => $self->{id},
