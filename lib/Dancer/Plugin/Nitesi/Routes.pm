@@ -20,6 +20,8 @@ The template for each route type can be configured:
           template: cart
         checkout:
           template: checkout
+        navigation:
+          template: listing
         product:
           template: product
 
@@ -35,6 +37,7 @@ register_plugin;
 
 our %route_defaults = (cart => {template => 'cart'},
                        checkout => {template => 'checkout'},
+                       navigation => {template => 'listing'},
                        product => {template => 'product'});
 
 sub _setup_routes {
@@ -112,9 +115,10 @@ sub _setup_routes {
 
             my $products = [map {shop_product($_)->dump} @$pkeys];
 
-            return template 'listing', {%{$result->[0]},
-                                        products => $products,
-                                       };
+            return template $routes_config->{navigation}->{template},
+                {%{$result->[0]}, 
+                 products => $products,
+                };
         }
 
         # display not_found page
