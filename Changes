@@ -1,5 +1,19 @@
 Revision history for Dancer::Plugin::Nitesi
 
+0.0093 Wed Aug 21 11:34:36 2013 CEST 
+
+    [BUG FIXES]
+
+    * Use proper object for products loaded by uri in product route.
+    * Add price to the list of fields to retrieve from the database.
+    * Fix problem with fallback to navigation.
+
+    [ENHANCEMENTS]
+
+    * Add configuration option for product listing template.
+    * Add stub routes for checkout.
+    * Add code for adding single items and also display values to cart route.
+
 0.0092 Thu Jun 27 19:25:18 2013 CEST
 
     [BUG FIXES]
