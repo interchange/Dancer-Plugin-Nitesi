@@ -2,7 +2,7 @@ NAME
     Dancer::Plugin::Nitesi - Nitesi Shop Machine plugin for Dancer
 
 VERSION
-    Version 0.0093
+    Version 0.0094
 
 SYNOPSIS
         use Dancer::Plugin::Nitesi;
@@ -33,6 +33,18 @@ CARTS
     carts of arbitrary users.
 
         cart('', 123)->items;
+
+PAYMENT
+    Card payments can be processed by one of the various providers supported
+    by Business::OnlinePayment with the charge keyword.
+
+        $tx = charge(provider => 'Braintree',
+                     amount => cart->total,
+                     first_name => 'Test',
+                     last_name => 'Tester',
+                     card_number => '4111111111111111',
+                     expiration => '0714',
+                     cvc => '222');
 
 ACCOUNTS
     The account keyword returns a Nitesi::Account::Manager object with the

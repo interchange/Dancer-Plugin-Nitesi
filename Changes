@@ -1,5 +1,12 @@
 Revision history for Dancer::Plugin::Nitesi
 
+0.0094 Sun Aug 25 16:50:46 2013 CEST
+
+    [ENHANCEMENTS]
+
+    * Add charge keyword to support card payments through
+      Business::OnlinePayment.
+
 0.0093 Wed Aug 21 11:34:36 2013 CEST 
 
     [BUG FIXES]
