@@ -63,6 +63,19 @@ of arbitrary users.
 
     cart('', 123)->items;
 
+=head1 PAYMENT
+
+Card payments can be processed by one of the various providers
+supported by L<Business::OnlinePayment> with the charge keyword.
+
+    $tx = charge(provider => 'Braintree',
+                 amount => cart->total,
+                 first_name => 'Test',
+                 last_name => 'Tester',
+                 card_number => '4111111111111111',
+                 expiration => '0714',
+                 cvc => '222');
+
 =head1 ACCOUNTS
 
 The account keyword returns a L<Nitesi::Account::Manager> object with the
