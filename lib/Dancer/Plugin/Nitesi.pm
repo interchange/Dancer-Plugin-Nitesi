@@ -16,6 +16,8 @@ use Dancer qw(:syntax !before !after);
 use Dancer::Plugin;
 use Dancer::Plugin::Database;
 
+use Business::OnlinePayment 3.02;
+
 =head1 NAME
 
 Dancer::Plugin::Nitesi - Nitesi Shop Machine plugin for Dancer
@@ -533,6 +535,74 @@ register cart => sub {
     }
 
     return vars->{'nitesi_carts'}->{$token};
+};
+
+register charge => sub {
+	my (%args) = @_;
+	my ($tx, $payment_settings, $provider, $provider_settings);
+
+    _load_settings();
+
+	$payment_settings = $settings->{Payment};
+
+    # determine payment provider
+    if (exists $args{provider} && $args{provider}) {
+        $provider = $args{provider};
+    }
+    else {
+        $provider = $payment_settings->{default_provider};
+    }
+
+    debug "Payment settings: ", $payment_settings;
+
+    $provider_settings = $payment_settings->{providers}->{$provider};
+
+    # create BOP object with provider settings
+	$tx = Business::OnlinePayment->new($provider, %$provider_settings);
+
+	if ($provider_settings->{server}) {
+		$tx->server( $provider_settings->{server} );
+	}
+
+	# Sofortbanking expects amount as xx.xx
+	$args{amount} = sprintf( '%.2f', $args{amount} );
+
+	$tx->content(
+		%$provider_settings,
+		amount      => $args{amount},
+		card_number => $args{card_number},
+		expiration  => $args{expiration},
+		cvc         => $args{cvc},
+        first_name  => $args{first_name},
+        last_name   => $args{last_name},
+		login       => $provider_settings->{login},
+		password    => $provider_settings->{password},
+		type        => $args{type} || $provider_settings->{type} || 'CC',
+		action => $args{action} || $provider_settings->{action} || 'Authorization Only',
+	);
+
+	eval { $tx->submit(); };
+
+	if ($@) {
+		die "Payment with provider $provider failed: ", $@;
+	}
+
+	if ( $tx->is_success() ) {
+		if ( $tx->can('popup_url') ) {
+			debug( "Success!  Redirect browser to " . $tx->popup_url() );
+		}
+        else {
+            debug("Successful payment, authorization: ",
+                  $tx->authorization);
+            debug("Order number: ", $tx->order_number);
+        }
+	}
+	else {
+		debug( "Card was rejected: " . $tx->error_message );
+        return;
+	}
+
+	return $tx;
 };
 
 register query => sub {
