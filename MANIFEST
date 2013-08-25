@@ -1,5 +1,6 @@
 Changes
 lib/Dancer/Plugin/Nitesi.pm
+lib/Dancer/Plugin/Nitesi/Business/OnlinePayment.pm
 lib/Dancer/Plugin/Nitesi/Cart/DBI.pm
 lib/Dancer/Plugin/Nitesi/Cart/Session.pm
 lib/Dancer/Plugin/Nitesi/Routes.pm

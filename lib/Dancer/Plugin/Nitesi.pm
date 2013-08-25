@@ -16,7 +16,7 @@ use Dancer qw(:syntax !before !after);
 use Dancer::Plugin;
 use Dancer::Plugin::Database;
 
-use Business::OnlinePayment 3.02;
+use Dancer::Plugin::Nitesi::Business::OnlinePayment;
 
 =head1 NAME
 
@@ -552,7 +552,7 @@ register cart => sub {
 
 register charge => sub {
 	my (%args) = @_;
-	my ($tx, $payment_settings, $provider, $provider_settings);
+	my ($bop_nitesi, $payment_settings, $provider, $provider_settings);
 
     _load_settings();
 
@@ -570,52 +570,13 @@ register charge => sub {
 
     $provider_settings = $payment_settings->{providers}->{$provider};
 
-    # create BOP object with provider settings
-	$tx = Business::OnlinePayment->new($provider, %$provider_settings);
+    # create BOP object wrapper with provider settings
+	$bop_nitesi = Dancer::Plugin::Nitesi::Business::OnlinePayment->new($provider, %$provider_settings);
 
-	if ($provider_settings->{server}) {
-		$tx->server( $provider_settings->{server} );
-	}
+    # call charge method
+    $bop_nitesi->charge(%args);
 
-	# Sofortbanking expects amount as xx.xx
-	$args{amount} = sprintf( '%.2f', $args{amount} );
-
-	$tx->content(
-		%$provider_settings,
-		amount      => $args{amount},
-		card_number => $args{card_number},
-		expiration  => $args{expiration},
-		cvc         => $args{cvc},
-        first_name  => $args{first_name},
-        last_name   => $args{last_name},
-		login       => $provider_settings->{login},
-		password    => $provider_settings->{password},
-		type        => $args{type} || $provider_settings->{type} || 'CC',
-		action => $args{action} || $provider_settings->{action} || 'Authorization Only',
-	);
-
-	eval { $tx->submit(); };
-
-	if ($@) {
-		die "Payment with provider $provider failed: ", $@;
-	}
-
-	if ( $tx->is_success() ) {
-		if ( $tx->can('popup_url') ) {
-			debug( "Success!  Redirect browser to " . $tx->popup_url() );
-		}
-        else {
-            debug("Successful payment, authorization: ",
-                  $tx->authorization);
-            debug("Order number: ", $tx->order_number);
-        }
-	}
-	else {
-		debug( "Card was rejected: " . $tx->error_message );
-        return;
-	}
-
-	return $tx;
+	return $bop_nitesi;
 };
 
 register query => sub {
