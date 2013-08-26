@@ -8,6 +8,25 @@ use Moo;
 
 Dancer::Plugin::Nitesi::Business::OnlinePayment - Nitesi wrapper for Business:OnlinePayment
 
+=head1 CONFIGURATION
+
+Configuration for AuthorizeNet provider:
+
+  plugins:
+    Nitesi:
+      Payment:
+        default_provider: AuthorizeNet
+        providers:
+          AuthorizeNet:
+            login: <API Login ID>
+            password: <Transaction Key>
+
+If you use a test account, please add the following
+parameters:
+
+            test_transaction: 1
+            server: test.authorize.net
+
 =head1 ATTRIBUTES
 
 =head2 provider
