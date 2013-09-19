@@ -2,7 +2,7 @@ NAME
     Dancer::Plugin::Nitesi - Nitesi Shop Machine plugin for Dancer
 
 VERSION
-    Version 0.0094
+    Version 0.0095
 
 SYNOPSIS
         use Dancer::Plugin::Nitesi;

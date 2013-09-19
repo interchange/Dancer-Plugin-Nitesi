@@ -1,5 +1,17 @@
 Revision history for Dancer::Plugin::Nitesi
 
+0.0095 Thu Sep 19 10:27:16 2013 CEST
+
+    [ENHANCEMENTS]
+
+    * Add before_product_display hook to Routes plugin.
+    * Add provider to log message in case of rejected card.
+
+    [DOCUMENTATION]
+
+    * Add list of hooks to the documentation of the Routes plugin.
+    * Add configuration example for AuthorizeNet payment provider.
+
 0.0094 Sun Aug 25 16:50:46 2013 CEST
 
     [ENHANCEMENTS]
