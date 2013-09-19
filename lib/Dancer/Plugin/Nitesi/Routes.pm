@@ -27,6 +27,21 @@ The template for each route type can be configured:
 
 This sample configuration shows the current defaults.
 
+=head2 HOOKS
+
+The following hooks are available to manipulate the values
+passed to the templates:
+
+=over 4
+
+=item before_product_display
+
+=item before_cart_display
+
+=item before_checkout_display
+
+=back
+
 =cut
 
 register shop_setup_routes => sub {
