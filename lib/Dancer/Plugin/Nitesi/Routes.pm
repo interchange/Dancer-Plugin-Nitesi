@@ -33,6 +33,8 @@ register shop_setup_routes => sub {
     _setup_routes();
 };
 
+register_hook 'before_product_display';
+
 register_plugin;
 
 our %route_defaults = (cart => {template => 'cart'},
@@ -98,6 +100,7 @@ sub _setup_routes {
             }
             else {
                 # flypage
+                execute_hook('before_product_display', $product);
                 return template $routes_config->{product}->{template}, $product;
             }
         }
