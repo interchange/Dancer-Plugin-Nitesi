@@ -1,5 +1,11 @@
 Revision history for Dancer::Plugin::Nitesi
 
+0.0096 Sat Sep 21 13:55:24 2013 CEST
+
+    [API CHANGES]
+
+    * Add support for anonymous DBI carts (session_id field in carts).
+
 0.0095 Thu Sep 19 10:27:16 2013 CEST
 
     [ENHANCEMENTS]
