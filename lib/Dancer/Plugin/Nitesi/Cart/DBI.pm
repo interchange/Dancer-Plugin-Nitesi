@@ -35,6 +35,7 @@ sub init {
 	};
     };
 
+    $self->{session_id} = $args{session_id} || '';
     $self->{settings} = $args{settings} || {};
     $self->{sqla} = Nitesi::Query::DBI->new(%q_args);
 
@@ -56,14 +57,17 @@ sub load {
     my ($uid, $name, $code);
 
     # check whether user is authenticated or not
-    unless ($uid = $args{uid} || 0) {
-	return;
-    }
-
+    $uid = $args{uid} || 0;
     $self->{uid} = $uid;
 
-    # determine cart code
-    $code = $self->{sqla}->select_field(table => 'carts', field => 'code', where => {name => $self->name, uid => $uid});
+    if ($uid) {
+        # determine cart code (from uid)
+        $code = $self->{sqla}->select_field(table => 'carts', field => 'code', where => {name => $self->name, uid => $uid});
+    }
+    elsif ($args{session_id}) {
+        # determine cart code (from session_id)
+        $code = $self->{sqla}->select_field(table => 'carts', field => 'code', where => {name => $self->name, uid => 0, session_id => $args{session_id}});
+    }
     
     unless ($code) {
 	$self->{id} = 0;
@@ -114,7 +118,9 @@ sub _create_cart {
     my $self = shift;
 
 	$self->{id} = $self->{sqla}->insert('carts', {name => $self->name,
-                                                  uid => $self->{uid}});
+                                                  uid => $self->{uid} || 0,
+                                                  session_id => $self->{session_id} || '',
+                                                 });
 }
 
 # loads cart from database

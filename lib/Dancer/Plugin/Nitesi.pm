@@ -745,10 +745,12 @@ sub _create_cart {
 
     $cart = Nitesi::Class->instantiate($backend_class,
 				       name => $name,
+                                       session_id => session->id,
                                        settings => $cart_settings,
 				       run_hooks => sub {execute_hook(@_)});
 
-    $cart->load(uid => $id || _account()->uid);
+    $cart->load(uid => $id || _account()->uid,
+               session_id => session->id);
 
     return $cart;
 }
