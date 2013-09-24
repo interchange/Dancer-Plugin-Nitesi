@@ -1,5 +1,11 @@
 Revision history for Dancer::Plugin::Nitesi
 
+0.0097 Tue Sep 24 22:05:15 2013 CEST
+ 
+    [ENHANCEMENTS]
+
+    * Add before_navigation_display hook to Routes plugin.
+
 0.0096 Sat Sep 21 13:55:24 2013 CEST
 
     [API CHANGES]
