@@ -36,11 +36,16 @@ passed to the templates:
 
 =item before_product_display
 
+The hook sub receives the product data as hash reference.
+
 =item before_cart_display
 
 =item before_checkout_display
 
 =item before_navigation_display
+
+The hook sub receives the navigation data as hash reference.
+The list of products is the value of the C<products> key.
 
 =back
 
