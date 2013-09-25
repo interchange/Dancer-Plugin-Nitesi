@@ -137,7 +137,7 @@ sub _setup_routes {
             # navigation item found
             my $pkeys = shop_navigation($result->[0]->{code})->assigned(shop_product);
 
-            my $products = [map {shop_product($_)->dump} @$pkeys];
+            my $products = [grep {! $_->{inactive}} map {shop_product($_)->dump} @$pkeys];
 
             my $tokens = {%{$result->[0]},
                           products => $products,
