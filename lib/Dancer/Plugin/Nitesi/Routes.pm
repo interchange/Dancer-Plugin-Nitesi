@@ -10,6 +10,31 @@ use Dancer::Plugin::Nitesi::Routes::Checkout;
 
 Dancer::Plugin::Nitesi::Routes - Routes for Nitesi Shop Machine
 
+=head2 ROUTES
+
+The following routes are automatically created by this plugin:
+
+=over 4
+
+=item cart (C</cart>)
+
+Route for displaying and updating the cart.
+
+=item checkout (C</checkout>)
+
+Route for the checkout process.
+
+=item navigation
+
+Route for displaying navigation pages, for example
+categories and menus.
+
+=item product
+
+Route for displaying products.
+
+=back
+
 =head2 CONFIGURATION
 
 The template for each route type can be configured:
