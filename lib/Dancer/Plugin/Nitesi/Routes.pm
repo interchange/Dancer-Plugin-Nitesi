@@ -181,13 +181,19 @@ sub _setup_routes {
 
 sub _config_routes {
     my ($settings, $defaults) = @_;
-    my ($key, $vref, $name, $value);
+    my ($key, $vref, $name, $value, $set_value);
+
+    unless (ref($defaults)) {
+        return;
+    }
 
     while (($key, $vref) = each %$defaults) {
-        while (($name, $value) = each %$vref) {
-            unless (exists $settings->{$key}->{$name}) {
-                $settings->{$key}->{$name} = $value;
-            }
+        if (exists $settings->{$key}) {
+            # recurse
+            _config_routes($settings->{$key}, $defaults->{$key});
+        }
+         else {
+            $settings->{$key} = $defaults->{$key};
         }
     }
 
