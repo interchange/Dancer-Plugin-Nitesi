@@ -25,15 +25,24 @@ sub cart_route {
 
     return sub {
         my %values;
-        my ($input, $product, $cart_item);
+        my ($input, $product, $cart_item, $cart_name, $cart_input);
 
         if ($input = param('sku')) {
             if (scalar($input)) {
                 $product = shop_product($input);
                 $product->load;
-                $cart_item = cart->add(sku => $product->sku,
-                                       name => $product->name,
-                                       price => $product->price);
+
+                $cart_input = {sku => $product->sku,
+                               name => $product->name,
+                               price => $product->price};
+
+                if ($cart_name = param('cart')
+                    && scalar($cart_name)) {
+                    $cart_item = cart($cart_name)->add($cart_input);
+                }
+                else {
+                    cart->add($cart_input);
+                }
 
                 unless ($cart_item) {
                     warning "Cart error: ", cart->error;
