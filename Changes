@@ -1,5 +1,17 @@
 Revision history for Dancer::Plugin::Nitesi
 
+0.0098 Sun Oct  6 13:19:46 2013 EDT
+
+    [ENHANCEMENTS]
+
+    * Move generic part of _api_object function to Nitesi::Provider::Object.
+    * Let cart route recognize parameter for cart name.
+    * Use proper navigation object in default routes.
+
+    [DOCUMENTATION]
+
+    * Add description of routes to Dancer::Plugin::Nitesi::Routes' POD.
+
 0.0097 Tue Sep 24 22:05:15 2013 CEST
  
     [ENHANCEMENTS]
