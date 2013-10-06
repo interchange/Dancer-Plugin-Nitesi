@@ -8,6 +8,7 @@ use Nitesi::Account::Manager;
 use Nitesi::Product;
 use Nitesi::Cart;
 use Nitesi::Class;
+use Nitesi::Provider::Object qw/api_object/;
 use Nitesi::Query::DBI;
 
 use Moo::Role;
@@ -390,22 +391,6 @@ sub _api_object {
         $api_class = $args{class};
     }
 
-    # create API object
-    my (%api_info, $o_key);
-
-    $api_object = Nitesi::Class->instantiate($api_class,
-					     api_class => $api_class,
-					     api_name => $args{name},
-                         api_attributes => $settings->{$sname}->{attributes},
-                         );
-
-    unless ($api_object) {
-        die "Failed to create class $api_class: $@";
-    }
-
-    $api_info{$api_class} = $api_object->api_info;
-    $o_key = $api_info{$api_class}->{key};
-
     # load Dancer settings for this backend
     $settings_class = "Dancer::Plugin::Nitesi::Backend::$backend";
 
@@ -416,40 +401,13 @@ sub _api_object {
     $o_settings = Nitesi::Class->instantiate($settings_class, @settings_args);
     $backend_settings = $o_settings->params;
 
-    # load roles for this API object
-    for my $role_name (@{$args{roles} || []}) {
-        Nitesi::Class->load($role_name);
-        my $api_func = lc($role_name);
-        $api_func =~ s/^(.*)::([^:]+)$/$2/;
-        $api_func .= '_api_info';
-        $api_info{$role_name} = $role_name->$api_func;
-        push (@roles, $role_name);
-    }
-
-    # load backend class
-    my $backend_class = "Nitesi::Backend::$backend";
-    Nitesi::Class->load($backend_class);
-
-    # apply backend role to navigation object
-    my ($key, $value);
-
-    Moo::Role->apply_roles_to_object($api_object, @roles, $backend_class);
-
-    while (($key, $value) = each %$backend_settings) {
-        $api_object->$key($value);
-    }
-
-    if ($settings->{$sname}->{field_map}) {
-        $api_object->field_map($settings->{$sname}->{field_map});
-    }
-
-    $api_object->api_info(\%api_info);
-
-    if ($args{$o_key}) {
-        $api_object->$o_key($args{$o_key});
-    }
-
-    return $api_object;
+    # create API object
+    return api_object(backend => $backend,
+                      backend_settings => $backend_settings,
+                      class => $api_class,
+                      name => $sname,
+                      settings => $settings,
+                      %args);
 }
 
 register shop_address => sub {
