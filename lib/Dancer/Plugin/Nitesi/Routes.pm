@@ -160,17 +160,20 @@ sub _setup_routes {
 
         if (@$result == 1) {
             # navigation item found
+
+            my $nav = $result->[0];
+
             my $pkeys = shop_navigation($result->[0]->{code})->assigned(shop_product);
 
             my $products = [grep {! $_->{inactive}} map {shop_product($_)->dump} @$pkeys];
 
-            my $tokens = {%{$result->[0]},
+            my $tokens = {navigation => $nav,
                           products => $products,
                          };
 
             execute_hook('before_navigation_display', $tokens);
 
-            return template $routes_config->{navigation}->{template}, $tokens;
+            return template $nav->template || $routes_config->{navigation}->{template}, $tokens;
         }
 
         # display not_found page
