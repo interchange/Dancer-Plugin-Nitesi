@@ -105,7 +105,7 @@ sub _setup_routes {
     post '/checkout' => $checkout_sub;
 
     # fallback route for flypage and navigation
-    get qr{/(?<path>.*)} => sub {
+    get qr{/(?<path>.+)} => sub {
         my $path = captures->{'path'};
         my $product;
 
