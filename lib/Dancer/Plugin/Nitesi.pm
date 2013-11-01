@@ -650,7 +650,7 @@ sub _config_to_array {
 
 sub _create_cart {
     my ($name, $id) = @_;
-    my ($backend, $backend_class, $cart, $cart_settings);
+    my ($backend, $backend_class, $cart, $cart_settings, $connection);
 
     _load_settings();
 
@@ -661,6 +661,10 @@ sub _create_cart {
 	$backend = 'Session';
     }
 
+    if (exists $settings->{Cart}->{Connection}) {
+        $connection = $settings->{Cart}->{Connection};
+    }
+    
     # check for specific settings for this cart name
     if (exists $settings->{Cart}->{Carts}) {
         my $sref = $settings->{Cart}->{Carts};
@@ -705,6 +709,7 @@ sub _create_cart {
 				       name => $name,
                                        session_id => session->id,
                                        settings => $cart_settings,
+                                       connection => $connection,
 				       run_hooks => sub {execute_hook(@_)});
 
     $cart->load(uid => $id || _account()->uid,
