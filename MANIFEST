@@ -14,6 +14,7 @@ t/00-load.t
 t/account.t
 t/account_dbi.t
 t/cart.t
+t/cart_dbi.t
 t/manifest.t
 t/pod-coverage.t
 t/pod.t
