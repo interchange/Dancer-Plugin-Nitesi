@@ -26,7 +26,19 @@ sub init {
     my ($self, %args) = @_;
     my (%q_args);
 
-    $self->{dbh} = database();
+    if (my $conn = $args{connection}) {
+        if (ref($conn) and $conn->isa('DBI::db')) {
+            # passing database handle directly, useful for testing
+            $self->{dbh} = $conn;
+        }
+        else {
+            $self->{dbh} = database($conn);
+        }
+    }
+    else {
+        $self->{dbh} = database();
+    }
+
     %q_args = (dbh => $self->{dbh});
 
     if ($args{settings}->{log_queries}) {
@@ -120,6 +132,8 @@ sub _create_cart {
 	$self->{id} = $self->{sqla}->insert('carts', {name => $self->name,
                                                   uid => $self->{uid} || 0,
                                                   session_id => $self->{session_id} || '',
+                                                  created => $self->created,
+                                                  last_modified => $self->last_modified,
                                                  });
 }
 
