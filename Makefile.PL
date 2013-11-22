@@ -15,7 +15,7 @@ WriteMakefile(
         'Test::More' => 0,
         'Test::Database' => 0,
         'YAML'       => 0,
-	'Nitesi'     => 0.0092,
+	'Nitesi'     => 0.0093,
 	'Nitesi::DBI' => 0.0092,
         'Dancer'     => 1.3098,
 	'Dancer::Plugin::Database' => 0,
