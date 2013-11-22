@@ -1,5 +1,19 @@
 Revision history for Dancer::Plugin::Nitesi
 
+0.0099 Fri Nov 22 21:03:35 2013 CET
+
+    [ENHANCEMENTS]
+
+    * Add Connection configuration setting for cart.
+
+    [BUG FIXES]
+
+    * Skip fallback route for flypage and navigation on /.
+
+    [TESTS]
+
+    * Add tests for DBI cart backend.
+
 0.0098 Sun Oct  6 13:19:46 2013 EDT
 
     [ENHANCEMENTS]
