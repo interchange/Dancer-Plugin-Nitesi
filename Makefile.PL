@@ -25,7 +25,8 @@ WriteMakefile(
     clean               => { FILES => 'Dancer-Plugin-Nitesi-*' },
     META_MERGE        => {
         resources => {
-            repository  => 'https://github.com/racke/Dancer-Plugin-Nitesi.git',
+            repository  => 'https://github.com/interchange/Dancer-Plugin-Nitesi.git',
+            bugtracker => 'https://github.com/interchange/Dancer-Plugin-Nitesi/issues'
         },
     },
 );
