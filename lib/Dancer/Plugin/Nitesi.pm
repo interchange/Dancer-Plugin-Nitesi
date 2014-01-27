@@ -310,6 +310,17 @@ DBI queries can be logged with debug level as follows:
         Query:
           log: 1
 
+To provide a default connection when using multiple
+L<Dancer::Plugin::Database> settings with C<connections>, and you want
+to use it when calling C<query>, you can add C<Connection>:
+
+    plugins:
+      Nitesi:
+        Query:
+          Connection: shop
+          log: 1
+
+
 =cut
 
 register_hook(qw/before_cart_add_validate
@@ -554,13 +565,22 @@ register query => sub {
     unless (exists vars->{'nitesi_query'}->{$name}) {
         # not yet used in this request
         if (ref($arg) && $arg->isa('DBI::db')) {
+            # handler passed
             $dbh = $arg;
         }
-        else {
-            unless ($dbh = database($arg)) {
-                die "No database handle for database '$name'";
-            }
+        elsif ($arg) {
+            # named connection
+            $dbh = database($arg);
         }
+        elsif (my $default_conn = $settings->{Query}->{Connection}) {
+            # use the default
+            $dbh = database($default_conn);
+        }
+        else {
+            # no named connection
+            $dbh = database;
+        }
+        die "No database handle for database '$name'" unless $dbh;
 
         if ($settings->{Query}->{log}) {
             $debug = \&_query_debug;
