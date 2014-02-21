@@ -22,7 +22,7 @@ $tests = 0;
 
 for my $testdb (@handles) {
     next if $test_exclusion_map{$testdb->dbd()};
-    $tests += 16;
+    $tests += 20;
 }
 
 if ($tests) {
@@ -192,11 +192,17 @@ sub run_tests {
      ok ($ret, "Add pumps to dealer cart.")
          || diag "Failed to add pumps to dealer cart.";
 
-    diag Dumper(cart('dealer')->items);
+    # diag Dumper(cart('dealer')->items);
     is(cart('dealer')->items->[0]->{priority}, 0);
 
-    $ret = cart('dealer')->add(sku => 'PUMPS', name => 'Pumps', price => 5, quantity => 3);
-    is(cart->items->[1]->{priority}, 0, "priority by default is 0");
+    $ret = cart('dealer')->add(sku => 'PUMPSx', name => 'Pumpsx', price => 5, quantity => 3);
+    ok(!cart->error);
+    ok($ret);
+    is (cart('dealer')->count, 2);
+    is (cart('dealer')->quantity, 6);
+    is (cart('dealer')->items->[1]->{priority}, 0, "priority by default is 0");
+
+    # print Dumper(cart('dealer'));
 
 
 #    $ret = cart('dealer')->uid;
