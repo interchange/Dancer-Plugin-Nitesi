@@ -143,7 +143,7 @@ sub _load_cart {
 
     # build query for item retrieval
     my %specs = (fields => $self->{settings}->{fields} || 
-                 [qw/products.sku products.name products.price cart_products.quantity/],
+                 [qw/products.sku products.name products.price cart_products.quantity cart_products.priority/],
                  join => $self->{settings}->{join} ||
                  [qw/carts code=cart cart_products sku=sku products/],
                  where => {'carts.code' => $self->{id},
@@ -176,11 +176,21 @@ sub _after_cart_add {
     if ($update) {
 	# update item in database
 	$record = {quantity => $item->{quantity}};
+    if (exists $item->{priority}) {
+        $record->{priority} = $item->{priority};
+    }
 	$self->{sqla}->update('cart_products', $record, {cart => $self->{id}, sku => $item->{sku}});
     }
     else {
 	# add new item to database
-	$record = {cart => $self->{id}, sku => $item->{sku}, quantity => $item->{quantity}, position => 0};
+        my %newitem = (
+                       sku => $item->{sku},
+                       quantity => $item->{quantity},
+                       priority => $item->{priority} || 0,
+                       position => $item->{position} || 0,
+                      );
+        $record = {cart => $self->{id}, %newitem};
+        # print Dumper($record);
 	$self->{sqla}->insert('cart_products', $record);
     }
 }

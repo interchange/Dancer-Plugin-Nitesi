@@ -10,6 +10,7 @@ use Dancer::Test;
 
 use Dancer ':tests';
 use Dancer::Plugin::Nitesi;
+use Data::Dumper;
 
 my (@handles, $tests, %test_exclusion_map);
 
@@ -21,7 +22,7 @@ $tests = 0;
 
 for my $testdb (@handles) {
     next if $test_exclusion_map{$testdb->dbd()};
-    $tests += 11;
+    $tests += 16;
 }
 
 if ($tests) {
@@ -136,10 +137,17 @@ sub run_tests {
     my $ret;
 
     # main cart
-    $ret = cart->add(sku => 'FOO', name => 'Foo Shoes', price => 5, quantity => 2);
+    $ret = cart->add(sku => 'FOO', name => 'Foo Shoes',
+                     price => 5, quantity => 2, priority => 2);
+
+    # print Dumper($ret);
 
     ok ($ret, "Add Foo Shoes to cart.")
         || diag "Failed to add foo shoes.";
+
+    is ($ret->{priority}, 2);
+
+    is (cart->items->[0]->{priority}, 2, "priority listed in items");
 
     $ret = cart->count;
 
@@ -158,12 +166,14 @@ sub run_tests {
         || diag "Count is $ret instead of 0.";
 
     # wishlist
-    $ret = cart('wishlist')->add(sku => 'BAR', name => 'Bar Shoes', price => 5, quantity => 2);
+    $ret = cart('wishlist')->add(sku => 'BAR', name => 'Bar Shoes', price => 5, quantity => 2, priority => 5);
 
     ok ($ret, "Add Bar Shoes to wishlist.")
         || diag "Failed to add bar shoes.";
 
     $ret = cart('wishlist')->count;
+
+    is(cart('wishlist')->items->[0]->{priority}, 5);
 
     ok($ret == 1, "Checking wishlist count after adding two BARs.")
         || diag "Count is $ret instead of 1.";
@@ -177,10 +187,17 @@ sub run_tests {
         || diag "Count is $ret instead of 1.";
 
     # create new cart
-    $ret = cart('dealer')->add(sku => 'PUMPS', name => 'Pumps', price => 5, quantity => 3);
+    $ret = cart('dealer')->add(sku => 'PUMPS', name => 'Pumps', price => 5, quantity => 3, priority => 0);
 
      ok ($ret, "Add pumps to dealer cart.")
          || diag "Failed to add pumps to dealer cart.";
+
+    diag Dumper(cart('dealer')->items);
+    is(cart('dealer')->items->[0]->{priority}, 0);
+
+    $ret = cart('dealer')->add(sku => 'PUMPS', name => 'Pumps', price => 5, quantity => 3);
+    is(cart->items->[1]->{priority}, 0, "priority by default is 0");
+
 
 #    $ret = cart('dealer')->uid;
 #    warn "Ret: ", $ret, "\n";
